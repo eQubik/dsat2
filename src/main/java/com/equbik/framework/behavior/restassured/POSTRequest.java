@@ -25,12 +25,12 @@ import java.util.concurrent.TimeUnit;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class GETRequest implements TakeAction {
+public class POSTRequest implements TakeAction {
 
     private final Element element;
     private final Map<String, String> additionalMessage = new LinkedHashMap<>();
 
-    public GETRequest(Execution execution, Element element) {
+    public POSTRequest(Execution execution, Element element) {
         RestAssuredSetup restAssuredSetup = (RestAssuredSetup) execution;
         this.element = element;
     }
@@ -42,8 +42,9 @@ public class GETRequest implements TakeAction {
         ValidatableResponse validatableResponse;
         try {
             RequestSpecification request = RestAssured.given()
-                    .contentType(ContentType.JSON);
-            Response response = request.get(element.getMarker());
+                    .contentType(ContentType.JSON)
+                    .body(element.getCode());
+            Response response = request.post(element.getMarker());
             validatableResponse = response.then();
             String responseCode = String.valueOf(validatableResponse.extract().response().getStatusCode());
             String timing = String.valueOf(validatableResponse.extract().response().timeIn(TimeUnit.MILLISECONDS));

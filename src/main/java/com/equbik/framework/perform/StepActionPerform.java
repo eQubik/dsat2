@@ -64,6 +64,12 @@ public class StepActionPerform {
                 //Badass action types used to replace pattern in marker value with the provided value before execution
                 element.setMarker(element.getMarker().replace(element.getValue(), variables.get(element.getValue())));
                 logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+            } else if(typeId == 19){
+                for (String key: variables.keySet()){
+                    if(element.getCode().contains(key)) {
+                        element.setCode(element.getCode().replace(key, variables.get(key)));
+                    }
+                }
             }
         }
     }

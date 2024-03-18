@@ -64,6 +64,7 @@ public class StaticVariables {
         actionsMap.put(17, "JSExecutor");
         //RestAssured
         actionsMap.put(18, "GETRequest");
+        actionsMap.put(19, "POSTRequest");
         //Other executor's methods
 
         //Experimental things...

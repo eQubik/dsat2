@@ -2,8 +2,8 @@ package com.equbik.framework.executions;
 
 import com.equbik.framework.executors.Executor;
 import com.equbik.framework.executors.Selenium;
-import com.equbik.framework.executors.drivers.chrome.ChromeLocal;
-import com.equbik.framework.executors.drivers.chrome.ChromeRemote;
+import com.equbik.framework.executions.drivers.chrome.ChromeLocal;
+import com.equbik.framework.executions.drivers.chrome.ChromeRemote;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

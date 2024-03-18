@@ -29,7 +29,7 @@ public class Launcher {
         //DEV
 
         String scenarioPath = "C:\\Users\\Emil\\IdeaProjects\\DSATLOGIC\\TIM\\scenarios\\sc1.json";
-        DSAT app = new DSAT(scenarioPath, true);
+        DSAT app = new DSAT(scenarioPath, false);
 
         logger.info("Creating an app execution. Scenario is: " + scenarioPath);
         app.performScenario();

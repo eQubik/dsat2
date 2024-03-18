@@ -1,4 +1,4 @@
-package com.equbik.framework.executors.drivers.chrome;
+package com.equbik.framework.executions.drivers.chrome;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;

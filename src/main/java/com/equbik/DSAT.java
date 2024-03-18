@@ -100,7 +100,6 @@ public class DSAT {
             return executorConstructor.newInstance(executorConfig);
         } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
             logger.warning("Error during executor Object creation. Execution is being skipped.");
-            e.printStackTrace();
             throw new RuntimeException("Error during executor Object creation: " + e.getMessage());
         }
     }
