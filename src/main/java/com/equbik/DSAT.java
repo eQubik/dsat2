@@ -1,6 +1,7 @@
 package com.equbik;
 
 import com.equbik.framework.executors.Executor;
+import com.equbik.framework.executors.ExecutorProvider;
 import com.equbik.framework.models.artifact_model.Results;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.models.json_model.Scenario;
@@ -42,11 +43,13 @@ public class DSAT {
         if (!isExecutorAndAdapterProvided(executorConfig, adapter))
             throw new RuntimeException("Executor or adapter is not provided, or not valid.");
         //Creating an instance of the Executor
-        Class<?> executorClass = getExecutorClass(executorIgnoreCase);
-        Constructor<?> executorConstructor = getExecutorConstructor(executorClass);
-        Object executorObject = getExecutor(executorConstructor, executorConfig);
-        this.executor = (Executor) executorObject;
+        ExecutorProvider executorProvider = new ExecutorProvider(executorIgnoreCase, executorConfig);
+        this.executor = executorProvider.getExecutor();
         this.print = print;
+    }
+
+    private boolean isExecutorAndAdapterProvided(Environment.Executor executorConfig, Environment.Adapter adapter) {
+        return executorConfig.getType() != null && adapter != null;
     }
 
     public void performScenario() {
@@ -65,42 +68,6 @@ public class DSAT {
             for (Results result : resultsList) {
                 System.out.println(result);
             }
-        }
-    }
-
-    private boolean isExecutorAndAdapterProvided(Environment.Executor executorConfig, Environment.Adapter adapter) {
-        return executorConfig.getType() != null && adapter != null;
-    }
-
-    private Class<?> getExecutorClass(String executor) {
-        try {
-            return Class.forName("com.equbik.framework.executors." + executor);
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            logger.warning("Executor class not found. Execution is being skipped.");
-            throw new RuntimeException("Executor class not found");
-        }
-    }
-
-    private Constructor<?> getExecutorConstructor(Class<?> executorClass) {
-        if (Executor.class.isAssignableFrom(executorClass)) {
-            try {
-                return executorClass.getDeclaredConstructor(Environment.Executor.class);
-            } catch (NoSuchMethodException e) {
-                logger.warning("Error creating executor's constructor. Execution is being skipped.");
-                throw new RuntimeException("Error creating executor's constructor");
-            }
-        } else {
-            logger.warning("Wrong executor type. Execution is being skipped.");
-            throw new RuntimeException("Wrong executor type");
-        }
-    }
-
-    private Object getExecutor(Constructor<?> executorConstructor, Environment.Executor executorConfig) {
-        try {
-            return executorConstructor.newInstance(executorConfig);
-        } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-            logger.warning("Error during executor Object creation. Execution is being skipped.");
-            throw new RuntimeException("Error during executor Object creation: " + e.getMessage());
         }
     }
 

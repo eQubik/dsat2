@@ -51,9 +51,9 @@ public class ScenarioActionPerform {
     }
 
     public void startScenario() {
-        List<StepActionPerform> list = new LinkedList<>();
-        createStepsMap(scenario, list);
-        executeSteps(list);
+        List<StepActionPerform> stepsList = new LinkedList<>();
+        createStepsMap(scenario, stepsList);
+        executeSteps(stepsList);
         postJobs();
     }
 
@@ -66,29 +66,22 @@ public class ScenarioActionPerform {
         }
     }
 
-    private void executeSteps(List<StepActionPerform> list) {
-        for (StepActionPerform stepAction : list) {
-            stepAction.process(previousStepResult());
-            resultsMap.put(stepAction.getStepName(), stepAction.getResults());
-        }
-    }
-
-    private void createStepsMap(Scenario scenario, List<StepActionPerform> list) {
+    private void createStepsMap(Scenario scenario, List<StepActionPerform> stepsList) {
         for (Step step : scenario.getSteps()) {
-            Map<String, String> variables = new HashMap<>();
-            try {
-                variables.putAll(step.getVariables());
-                logger.info("Variables for " + step.getStepName() + " initialized: " + step.getVariables());
-            } catch (NullPointerException e) {
-                logger.info("Skipping variables for " + step.getStepName());
-            }
-            list.add(new StepActionPerform(
+            stepsList.add(new StepActionPerform(
                     execution,
                     scenario.getEnvironment(),
                     adapter.stepElements().get(step.getStepName()),
-                    variables, step.getStepName()
-                    )
+                    initializeStepVariables(step),
+                    step.getStepName())
             );
+        }
+    }
+
+    private void executeSteps(List<StepActionPerform> stepsList) {
+        for (StepActionPerform stepAction : stepsList) {
+            stepAction.process(previousStepResult());
+            resultsMap.put(stepAction.getStepName(), stepAction.getResults());
         }
     }
 
@@ -102,6 +95,18 @@ public class ScenarioActionPerform {
                 logger.info("Selenium browser will stay active");
             }
         }
+    }
+
+    private Map<String, String> initializeStepVariables(Step step){
+        Map<String, String> variables = new HashMap<>();
+        try {
+            variables.putAll(step.getVariables());
+            logger.info("Variables for " + step.getStepName() + " initialized: " + step.getVariables());
+            return variables;
+        } catch (NullPointerException e) {
+            logger.info("Skipping variables for " + step.getStepName());
+        }
+        return variables;
     }
 
     @Override
