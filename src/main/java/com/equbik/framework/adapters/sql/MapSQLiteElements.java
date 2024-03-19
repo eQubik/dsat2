@@ -24,29 +24,31 @@ public class MapSQLiteElements {
     private static final Logger logger = Logger.getLogger(MapSQLiteElements.class.getName());
     private static MapSQLiteElements sqlLite = null;
     private final String jdbcURL;
+    private final String tableName;
 
-    private MapSQLiteElements(String dbPath){
+    private MapSQLiteElements(String dbPath, String tableName){
         this.jdbcURL = dbPath;
+        this.tableName = tableName;
     }
 
-    public static MapSQLiteElements getInstance(String dbPath){
+    public static MapSQLiteElements getInstance(String dbPath, String tableName){
         if(sqlLite == null)
-            sqlLite = new MapSQLiteElements(dbPath);
+            sqlLite = new MapSQLiteElements(dbPath, tableName);
         return sqlLite;
     }
 
-    public List<Element> getElementsList(String query){
+    public List<Element> dbElements(){
         try (Connection connection = DriverManager.getConnection(jdbcURL);
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            return dbElements(resultSet);
+            return getElementsListFromDB(resultSet);
         } catch (SQLException e) {
             logger.warning("Skipping execution due to: " + e.getMessage());
             throw new RuntimeException("Skipping execution due to: " + e.getMessage());
         }
     }
 
-    private List<Element> dbElements(ResultSet resultSet) throws SQLException{
+    private List<Element> getElementsListFromDB(ResultSet resultSet) throws SQLException{
         List<Element> elementsList = new LinkedList<>();
         while (resultSet.next()) {
             Element element = new Element();

@@ -40,9 +40,9 @@ public class AdapterProvider {
         } else if (adapterName.equals(Adapters.db.toString())){
             logger.info("Set adapter to db");
             String adapterTable = scenario.getEnvironment().getAdapter().getTable();
-            if(adapterTable == null) scenario.getEnvironment().getAdapter().setTable("auto_elements");
+            if(adapterTable == null) adapterTable = "auto_elements";
             String path = "jdbc:sqlite:" + adapterPath;
-            MapSQLiteElements sqlLite = MapSQLiteElements.getInstance(path);
+            MapSQLiteElements sqlLite = MapSQLiteElements.getInstance(path, adapterTable);
             return new AdapterSQL(scenario, sqlLite);
         } else {
             logger.warning("Wrong adapter type. Execution is being Skipped.");

@@ -1,5 +1,6 @@
 package com.equbik.framework.adapters.csv;
 
+import com.equbik.framework.adapters.ElementsPerStep;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Step;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class CSVElementsPerStep {
+public class CSVElementsPerStep extends ElementsPerStep {
 
     /*
      * CSVElementsPerStep class forms the list of elements from CSV file that is used as an adapter in the Scenario
@@ -21,22 +22,12 @@ public class CSVElementsPerStep {
 
     private final List<Element> elementsList;
 
-    public CSVElementsPerStep(MapCSVElements toElement) {
-        this.elementsList = toElement.csvToElementsList();
+    public CSVElementsPerStep(MapCSVElements csvElements) {
+        this.elementsList = csvElements.csvElements();
     }
 
     public List<Element> getStepElements(Step step) {
-        List<Element> elementsPerStep = new ArrayList<>();
-        List<String> elementsInStep;
-        elementsInStep = step.getElements();
-        for (String element : elementsInStep) {
-            Optional<Element> matchingElement = elementsList.stream()
-                    .filter(e -> e.getStep().equals(step.getStepName()))
-                    .filter(e -> e.getName().equals(element))
-                    .findFirst();
-            matchingElement.ifPresent(elementsPerStep::add);
-        }
-        return elementsPerStep;
+        return getStepElements(step, elementsList);
     }
 
 }

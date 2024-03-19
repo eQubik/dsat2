@@ -25,24 +25,20 @@ public class AdapterSQL implements Adapter {
     private static final Logger logger = Logger.getLogger(AdapterSQL.class.getName());
     private final Map<String, List<Element>> stepElements;
     private final Scenario scenario;
-    private final MapSQLiteElements sqlElements;
     private final SQLElementsPerStep elementsPerStep;
 
     public AdapterSQL(Scenario scenario, MapSQLiteElements sqlElements){
         this.scenario = scenario;
-        this.sqlElements = sqlElements;
-        this.elementsPerStep = new SQLElementsPerStep(scenario);
+        this.elementsPerStep = new SQLElementsPerStep(sqlElements);
         this.stepElements = stepElements();
     }
 
     @Override
     public Map<String, List<Element>> stepElements() {
         Map<String, List<Element>> stepElements = new LinkedHashMap<>();
-        int i = 0;
         for (Step step : scenario.getSteps()) {
             try {
-                stepElements.put(step.getStepName(), sqlElements.getElementsList(elementsPerStep.getQueryForEachStep().get(i)));
-                i++;
+                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(step));
             } catch (Exception e){
                 logger.warning("Skipping execution due to: " + e.getMessage());
                 throw new RuntimeException("Skipping execution due to: " + e.getMessage());

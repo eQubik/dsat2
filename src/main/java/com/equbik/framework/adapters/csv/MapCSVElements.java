@@ -45,7 +45,7 @@ public class MapCSVElements {
         this.csvFile = csvFile;
     }
 
-    public List<Element> csvToElementsList() {
+    public List<Element> csvElements() {
         List<Element> elementsList = new ArrayList<>();
         try (Reader reader = new FileReader(csvFile, StandardCharsets.UTF_8);
              CSVParser csvParser = new CSVParser(reader, getFormat())) {
