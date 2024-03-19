@@ -19,7 +19,6 @@ public class AdapterProvider {
     public AdapterProvider(Scenario scenario){
         this.adapterName = nullValueField(scenario.getEnvironment().getAdapter().getAdapter());
         this.adapterPath = nullValueField(scenario.getEnvironment().getAdapter().getAdapterPath());
-
         this.adapter = provideAdapter(scenario);
     }
 

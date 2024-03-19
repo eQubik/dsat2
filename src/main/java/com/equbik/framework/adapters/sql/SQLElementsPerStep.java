@@ -25,14 +25,12 @@ public class SQLElementsPerStep extends ElementsPerStep {
      * SQLElementsPerStep class ...
      */
 
-    private final List<Element> elementsList;
-
     public SQLElementsPerStep(MapSQLiteElements sqlElements) {
-        this.elementsList = sqlElements.dbElements();
+        super(sqlElements.dbElements());
     }
 
     public List<Element> getStepElements(Step step) {
-        return getStepElements(step, elementsList);
+        return super.getStepElements(step);
     }
 
 }

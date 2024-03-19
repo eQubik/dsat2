@@ -9,7 +9,13 @@ import java.util.Optional;
 
 public class ElementsPerStep {
 
-    public List<Element> getStepElements(Step step, List<Element> elementsList) {
+    private final List<Element> elementsList;
+
+    public ElementsPerStep(List<Element> elementsList){
+        this.elementsList = elementsList;
+    }
+
+    public List<Element> getStepElements(Step step) {
         List<Element> elementsPerStep = new ArrayList<>();
         List<String> elementsInStep;
         elementsInStep = step.getElements();

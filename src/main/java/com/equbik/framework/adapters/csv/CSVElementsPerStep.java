@@ -20,14 +20,12 @@ public class CSVElementsPerStep extends ElementsPerStep {
      * CSVElementsPerStep class forms the list of elements from CSV file that is used as an adapter in the Scenario
      */
 
-    private final List<Element> elementsList;
-
     public CSVElementsPerStep(MapCSVElements csvElements) {
-        this.elementsList = csvElements.csvElements();
+        super(csvElements.csvElements());
     }
 
     public List<Element> getStepElements(Step step) {
-        return getStepElements(step, elementsList);
+        return super.getStepElements(step);
     }
 
 }

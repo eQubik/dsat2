@@ -1,11 +1,10 @@
 package com.equbik.framework.adapters.sql;
 
 import com.equbik.framework.adapters.Adapter;
+import com.equbik.framework.adapters.AdapterMethods;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Scenario;
-import com.equbik.framework.models.json_model.Step;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -16,7 +15,7 @@ import java.util.logging.Logger;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class AdapterSQL implements Adapter {
+public class AdapterSQL extends AdapterMethods implements Adapter {
 
     /*
      * AdapterSQL class provides Adapter implementation and forms the Elements list for each step
@@ -35,16 +34,7 @@ public class AdapterSQL implements Adapter {
 
     @Override
     public Map<String, List<Element>> stepElements() {
-        Map<String, List<Element>> stepElements = new LinkedHashMap<>();
-        for (Step step : scenario.getSteps()) {
-            try {
-                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(step));
-            } catch (Exception e){
-                logger.warning("Skipping execution due to: " + e.getMessage());
-                throw new RuntimeException("Skipping execution due to: " + e.getMessage());
-            }
-        }
-        return stepElements;
+        return stepElements(scenario, elementsPerStep);
     }
 
     public Map<String, List<Element>> getStepElements() {

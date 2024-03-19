@@ -1,6 +1,7 @@
 package com.equbik.framework.perform;
 
 import com.equbik.framework.adapters.Adapter;
+import com.equbik.framework.adapters.AdapterMethods;
 import com.equbik.framework.adapters.AdapterProvider;
 import com.equbik.framework.executions.Execution;
 import com.equbik.framework.executions.ExecutionProvider;
