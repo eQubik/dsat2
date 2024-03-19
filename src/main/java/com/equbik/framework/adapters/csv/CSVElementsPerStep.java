@@ -31,6 +31,7 @@ public class CSVElementsPerStep {
         elementsInStep = step.getElements();
         for (String element : elementsInStep) {
             Optional<Element> matchingElement = elementsList.stream()
+                    .filter(e -> e.getStep().equals(step.getStepName()))
                     .filter(e -> e.getName().equals(element))
                     .findFirst();
             matchingElement.ifPresent(elementsPerStep::add);

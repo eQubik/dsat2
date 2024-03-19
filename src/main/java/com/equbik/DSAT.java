@@ -28,6 +28,9 @@ public class DSAT {
      * Feel free to improve\delete\add anything
      */
 
+    //TODO
+    // Multiple scenarios, remote execution, name each scenario inside a single execution(to share the state)
+
     private static final Logger logger = Logger.getLogger(DSAT.class.getName());
     private final Scenario scenario;
     private final Executor executor;
@@ -41,7 +44,7 @@ public class DSAT {
         String executorIgnoreCase = StaticVariables.executors(executorConfig.getType());
         //Checking if executor and adapter are configured
         if (!isExecutorAndAdapterProvided(executorConfig, adapter))
-            throw new RuntimeException("Executor or adapter is not provided, or not valid.");
+            throw new RuntimeException("Executor and adapter are not provided, or not valid.");
         //Creating an instance of the Executor
         ExecutorProvider executorProvider = new ExecutorProvider(executorIgnoreCase, executorConfig);
         this.executor = executorProvider.getExecutor();

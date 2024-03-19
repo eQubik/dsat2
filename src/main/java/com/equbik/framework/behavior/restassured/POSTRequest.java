@@ -46,13 +46,8 @@ public class POSTRequest implements TakeAction {
                     .body(element.getCode());
             Response response = request.post(element.getMarker());
             validatableResponse = response.then();
-            String responseCode = String.valueOf(validatableResponse.extract().response().getStatusCode());
-            String timing = String.valueOf(validatableResponse.extract().response().timeIn(TimeUnit.MILLISECONDS));
-            String body = validatableResponse.extract().response().body().asPrettyString();
-            additionalMessage.put("response_code", responseCode);
-            additionalMessage.put("timing", timing);
-            additionalMessage.put("body", body);
-            statusMessage = new StatusMessage(Status.Success, element, this.getClass().getSimpleName(), additionalMessage);
+            statusMessage = new StatusMessage(Status.Success, element, this.getClass().getSimpleName(),
+                    ResponseVerify.responseData(additionalMessage, validatableResponse));
             return result.additional(Status.Success, statusMessage.getStatusMessage().trim(), content(validatableResponse));
         } catch (Exception e) {
             additionalMessage.put("error", e.getMessage());
