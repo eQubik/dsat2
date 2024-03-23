@@ -6,11 +6,14 @@ import com.equbik.framework.models.artifact_model.Results;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.services.Executions;
+import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.Status;
 import com.equbik.framework.services.StatusMessage;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -53,7 +56,7 @@ public class ElementActionPerform {
         }
     }
 
-    private Results invokeAction(){
+    private Results invokeAction() {
         try {
             Class<?> actionClass = getActionClass();
             Object instance = getActionInstance(actionClass);
@@ -94,6 +97,7 @@ public class ElementActionPerform {
                 Constructor<?> constructor = actionClass.getDeclaredConstructor(Execution.class, Element.class, AWebElement.class);
                 return constructor.newInstance(execution, element, advancedElement());
             } else if (isRestAssured()) {
+                setHTTPMarkerOnDemand();
                 Constructor<?> constructor = actionClass.getDeclaredConstructor(Execution.class, Element.class);
                 return constructor.newInstance(execution, element);
             } else {
@@ -117,6 +121,23 @@ public class ElementActionPerform {
 
     private boolean isRestAssured() {
         return executionName.equals(Executions.RestAssuredSetup.toString());
+    }
+
+    private void setHTTPMarkerOnDemand() {
+        if (element.getRelatedElement() != null) {
+            StaticVariables.isConfigured.putIfAbsent(element, false);
+            if (StaticVariables.isConfigured.get(element).equals(false)) {
+                try {
+                    int relatedId = StaticVariables.ids.get(element.getRelatedElement());
+                    element.setMarker(element.getMarker() + "/" + relatedId);
+                    StaticVariables.isConfigured.put(element, true);
+                    logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+                } catch (Exception e) {
+                    logger.fine(element.getId() + " element won't preconfigured on demand");
+                }
+                logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+            }
+        }
     }
 
     @Override

@@ -57,65 +57,49 @@ public class StepActionPerform {
     private void preConfigElements(List<Element> elements) {
         for (Element element : elements) {
             int typeId = element.getActionType().getActionType();
-            if ((typeId == 2 || typeId == 8 || typeId == 13) && variables.containsKey(element.getValue())){
+            if ((typeId == 2 || typeId == 8 || typeId == 13) && variables.containsKey(element.getValue())) {
                 setValue(element);
-            } else if ((typeId == 7 || typeId == 12) && variables.containsKey(element.getValue())){
+            } else if ((typeId == 7 || typeId == 12) && variables.containsKey(element.getValue())) {
                 setMarker(element);
-            } else if(typeId == 19){
+            } else if (typeId == 19) {
                 setCode(element);
-            } else if ((typeId == 20 || typeId == 22) ){
+            } else if ((typeId == 20 || typeId == 22)) {
                 setHTTPMarker(element);
-            } else if (typeId == 21 ){
+            } else if (typeId == 21) {
                 setHTTPMarker(element);
                 setCode(element);
             }
         }
     }
 
-    private void setValue(Element element){
+    private void setValue(Element element) {
         //Used for direct value injection. For example(type "wiki" on the google main page)
         element.setValue(variables.get(element.getValue()));
         logger.fine(element.getId() + " element is preconfigured: " + element.getValue());
     }
 
-    private void setMarker(Element element){
+    private void setMarker(Element element) {
         //Badass action types used to replace pattern in marker value with the provided value before execution
         element.setMarker(element.getMarker().replace(element.getValue(), variables.get(element.getValue())));
         logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
     }
 
-    private void setCode(Element element){
-        for (String key: variables.keySet()){
-            if(element.getCode().contains(key)) {
+    private void setCode(Element element) {
+        for (String key : variables.keySet()) {
+            if (element.getCode().contains(key)) {
                 element.setCode(element.getCode().replace(key, variables.get(key)));
             }
         }
         logger.fine(element.getId() + " element is preconfigured: " + element.getCode());
     }
 
-    private void setHTTPMarker(Element element){
-        //todo
-        // error before execution
+    private void setHTTPMarker(Element element) {
         if(element.getRelatedElement() == null) {
             element.setValue(variables.get(element.getValue()));
             element.setMarker(element.getMarker() + "/" + element.getValue());
-            System.out.println(element.getName() + " 1");
         } else {
             logger.info(element.getId() + " priority set to related element");
-            try {
-                System.out.println(StaticVariables.ids);
-                int relatedId = StaticVariables.ids.get(element.getRelatedElement());
-                System.out.println(relatedId);
-                System.out.println(element.getName() + " 2");
-                element.setMarker(element.getMarker() + "/" + relatedId);
-                logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
-            } catch (Exception e) {
-                System.out.println(element.getName() + " 3");
-                logger.info(element.getId() + " element preconfiguring failed. Setting up with provided value");
-                element.setMarker(element.getMarker() + "/" + element.getValue());
-            }
         }
-        logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
     }
 
     private void getStepResults(Status previousStepResult, Execution execution) {
@@ -124,7 +108,7 @@ public class StepActionPerform {
             try {
                 ElementActionPerform elementAction = new ElementActionPerform(execution, environment, elements.get(0), previousStepResult);
                 results.add(elementAction.getAction());
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 logger.warning("There is no available elements provided. Execution is being Skipped.");
                 throw new RuntimeException("There is no available elements provided");
             }

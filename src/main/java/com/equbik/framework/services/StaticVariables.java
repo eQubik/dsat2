@@ -1,5 +1,6 @@
 package com.equbik.framework.services;
 
+import com.equbik.framework.models.element_model.Element;
 import io.restassured.response.ValidatableResponse;
 import org.openqa.selenium.WebDriver;
 
@@ -83,6 +84,10 @@ public class StaticVariables {
     //TODO
     // Shared field
     public static Map<String, Integer> ids = new HashMap<>();
+
+    //todo
+    // temp var
+    public static Map<Element, Boolean> isConfigured = new HashMap<>();
 
     //When you start the app, you need to mention the appropriate executor's name
     //which is typically starts with uppercase because it's a Java class name, however you can add another forms of the

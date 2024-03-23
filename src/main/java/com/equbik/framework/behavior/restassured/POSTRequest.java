@@ -34,7 +34,6 @@ public class POSTRequest extends TakeActionRestAssured implements TakeAction {
         Response response = request.post(element.getMarker());
         //
         StaticVariables.ids.put(element.getId().toString(), response.body().jsonPath().getInt("id"));
-        System.out.println(StaticVariables.ids);
         //
         return takeAction(response, this.getClass().getSimpleName());
     }
