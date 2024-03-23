@@ -63,6 +63,8 @@ public class StaticVariables {
         actionsMap.put(15, "ChangeBrowserTab");
         actionsMap.put(16, "ClickJS");
         actionsMap.put(17, "JSExecutor");
+        //Experimental things...
+        actionsMap.put(6, "EnterByPIN");
         //RestAssured
         actionsMap.put(18, "GETRequest");
         actionsMap.put(19, "POSTRequest");
@@ -70,9 +72,6 @@ public class StaticVariables {
         actionsMap.put(21, "PUTRequest");
         actionsMap.put(22, "DELETERequest");
         //Other executor's methods
-
-        //Experimental things...
-        actionsMap.put(6, "EnterByPIN");
 
         return actionsMap.get(action);
     }

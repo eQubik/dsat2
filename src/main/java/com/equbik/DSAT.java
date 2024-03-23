@@ -39,11 +39,11 @@ public class DSAT {
         this.scenario = JSONParser.parseScenario(scenarioPath);
         Environment.Executor executorConfig = scenario.getEnvironment().getExecutor();
         Environment.Adapter adapter = scenario.getEnvironment().getAdapter();
-        String executorIgnoreCase = StaticVariables.executors(executorConfig.getType());
         //Checking if executor and adapter are configured
         if (!isExecutorAndAdapterProvided(executorConfig, adapter))
             throw new RuntimeException("Executor and adapter are not provided, or not valid.");
         //Creating an instance of the Executor
+        String executorIgnoreCase = StaticVariables.executors(executorConfig.getType());
         ExecutorProvider executorProvider = new ExecutorProvider(executorIgnoreCase, executorConfig);
         this.executor = executorProvider.getExecutor();
         this.print = print;
