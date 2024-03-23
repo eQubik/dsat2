@@ -65,6 +65,9 @@ public class StaticVariables {
         //RestAssured
         actionsMap.put(18, "GETRequest");
         actionsMap.put(19, "POSTRequest");
+        actionsMap.put(20, "GETRequest");
+        actionsMap.put(21, "PUTRequest");
+        actionsMap.put(22, "DELETERequest");
         //Other executor's methods
 
         //Experimental things...
@@ -75,6 +78,11 @@ public class StaticVariables {
 
     //Used to change browser tabs during the test execution
     public static Set<String> tabs = new LinkedHashSet<>();
+
+    //...
+    //TODO
+    // Shared field
+    public static Map<String, Integer> ids = new HashMap<>();
 
     //When you start the app, you need to mention the appropriate executor's name
     //which is typically starts with uppercase because it's a Java class name, however you can add another forms of the

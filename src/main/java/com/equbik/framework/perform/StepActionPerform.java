@@ -4,6 +4,7 @@ import com.equbik.framework.executions.Execution;
 import com.equbik.framework.models.artifact_model.Results;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.Status;
 
 import java.util.LinkedList;
@@ -56,22 +57,65 @@ public class StepActionPerform {
     private void preConfigElements(List<Element> elements) {
         for (Element element : elements) {
             int typeId = element.getActionType().getActionType();
-            if ((typeId == 2 || typeId == 8 || typeId == 13) && variables.containsKey(element.getValue())) {
-                //Used for direct value injection. For example(type "wiki" on the google main page)
-                element.setValue(variables.get(element.getValue()));
-                logger.fine(element.getId() + " element is preconfigured: " + element.getValue());
-            } else if ((typeId == 7 || typeId == 12) && variables.containsKey(element.getValue())) {
-                //Badass action types used to replace pattern in marker value with the provided value before execution
-                element.setMarker(element.getMarker().replace(element.getValue(), variables.get(element.getValue())));
-                logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+            if ((typeId == 2 || typeId == 8 || typeId == 13) && variables.containsKey(element.getValue())){
+                setValue(element);
+            } else if ((typeId == 7 || typeId == 12) && variables.containsKey(element.getValue())){
+                setMarker(element);
             } else if(typeId == 19){
-                for (String key: variables.keySet()){
-                    if(element.getCode().contains(key)) {
-                        element.setCode(element.getCode().replace(key, variables.get(key)));
-                    }
-                }
+                setCode(element);
+            } else if ((typeId == 20 || typeId == 22) ){
+                setHTTPMarker(element);
+            } else if (typeId == 21 ){
+                setHTTPMarker(element);
+                setCode(element);
             }
         }
+    }
+
+    private void setValue(Element element){
+        //Used for direct value injection. For example(type "wiki" on the google main page)
+        element.setValue(variables.get(element.getValue()));
+        logger.fine(element.getId() + " element is preconfigured: " + element.getValue());
+    }
+
+    private void setMarker(Element element){
+        //Badass action types used to replace pattern in marker value with the provided value before execution
+        element.setMarker(element.getMarker().replace(element.getValue(), variables.get(element.getValue())));
+        logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+    }
+
+    private void setCode(Element element){
+        for (String key: variables.keySet()){
+            if(element.getCode().contains(key)) {
+                element.setCode(element.getCode().replace(key, variables.get(key)));
+            }
+        }
+        logger.fine(element.getId() + " element is preconfigured: " + element.getCode());
+    }
+
+    private void setHTTPMarker(Element element){
+        //todo
+        // error before execution
+        if(element.getRelatedElement() == null) {
+            element.setValue(variables.get(element.getValue()));
+            element.setMarker(element.getMarker() + "/" + element.getValue());
+            System.out.println(element.getName() + " 1");
+        } else {
+            logger.info(element.getId() + " priority set to related element");
+            try {
+                System.out.println(StaticVariables.ids);
+                int relatedId = StaticVariables.ids.get(element.getRelatedElement());
+                System.out.println(relatedId);
+                System.out.println(element.getName() + " 2");
+                element.setMarker(element.getMarker() + "/" + relatedId);
+                logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
+            } catch (Exception e) {
+                System.out.println(element.getName() + " 3");
+                logger.info(element.getId() + " element preconfiguring failed. Setting up with provided value");
+                element.setMarker(element.getMarker() + "/" + element.getValue());
+            }
+        }
+        logger.fine(element.getId() + " element is preconfigured: " + element.getMarker());
     }
 
     private void getStepResults(Status previousStepResult, Execution execution) {

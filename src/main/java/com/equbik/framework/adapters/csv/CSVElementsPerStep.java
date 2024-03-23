@@ -4,9 +4,7 @@ import com.equbik.framework.adapters.ElementsPerStep;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Step;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Emil Vasilyev
