@@ -5,6 +5,12 @@ import io.restassured.response.ValidatableResponse;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class ResponseVerify {
 
     public static Map<String, String> responseData(

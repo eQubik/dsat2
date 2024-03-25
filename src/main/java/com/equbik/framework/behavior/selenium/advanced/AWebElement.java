@@ -4,7 +4,17 @@ import com.equbik.framework.models.json_model.Environment;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class AWebElement {
+
+    /*
+     * AWebElement class ...
+     */
 
     private final GlobalHighlight globalHighlight;
     private final GlobalSleep globalSleep;

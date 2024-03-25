@@ -14,7 +14,7 @@ import java.util.List;
 public class ChromeLocal {
 
     /*
-     * ChromeLocal class is used to initialize the local(on your machine for example) chrome driver
+     * ChromeLocal class is used to initialize the local chrome driver
      */
 
     public static ThreadLocal<ChromeDriver> localChromeThreadLocal = new ThreadLocal<>();

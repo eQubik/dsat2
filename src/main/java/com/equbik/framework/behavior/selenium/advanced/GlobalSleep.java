@@ -4,7 +4,17 @@ import com.equbik.framework.models.json_model.Environment;
 
 import java.util.logging.Logger;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class GlobalSleep {
+
+    /*
+     * GlobalSleep class ...
+     */
 
     private static final Logger logger = Logger.getLogger(GlobalSleep.class.getName());
     private Long sec;

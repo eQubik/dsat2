@@ -4,7 +4,6 @@ import com.equbik.framework.executions.Execution;
 import com.equbik.framework.models.artifact_model.Results;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.Status;
 
 import java.util.LinkedList;

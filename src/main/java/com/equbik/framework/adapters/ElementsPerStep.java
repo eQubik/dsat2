@@ -7,7 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class ElementsPerStep {
+
+    /*
+     * AdapterMethods class ...
+     */
 
     private final List<Element> elementsList;
 

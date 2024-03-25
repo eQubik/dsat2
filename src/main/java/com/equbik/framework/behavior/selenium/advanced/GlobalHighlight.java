@@ -7,7 +7,17 @@ import org.openqa.selenium.WebElement;
 
 import java.util.logging.Logger;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class GlobalHighlight {
+
+    /*
+     * GlobalHighlight class ...
+     */
 
     private static final Logger logger = Logger.getLogger(GlobalHighlight.class.getName());
     private int border;

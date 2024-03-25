@@ -7,10 +7,15 @@ import com.equbik.framework.services.Status;
 import com.equbik.framework.services.StatusMessage;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
 
 public class TakeActionRestAssured {
 

@@ -9,7 +9,17 @@ import com.equbik.framework.services.Adapters;
 
 import java.util.logging.Logger;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class AdapterProvider {
+
+    /*
+     * AdapterMethods class ...
+     */
 
     private static final Logger logger = Logger.getLogger(AdapterProvider.class.getName());
     private final String adapterName;
