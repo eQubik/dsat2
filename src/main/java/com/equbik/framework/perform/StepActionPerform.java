@@ -1,7 +1,8 @@
 package com.equbik.framework.perform;
 
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
+import com.equbik.framework.models.artifact_model.StepResult;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.services.Status;
@@ -29,7 +30,7 @@ public class StepActionPerform {
     private final String stepName;
     private final List<Element> elements;
     private final Map<String, String> variables;
-    private final List<Results> results = new LinkedList<>();
+    private final StepResult stepResult = new StepResult();
 
     public StepActionPerform(Execution execution, Environment environment, List<Element> elements, Map<String, String> variables, String stepName) {
         this.execution = execution;
@@ -42,15 +43,16 @@ public class StepActionPerform {
 
     public void process(Status previousStepResult) {
         preConfigElements(elements);
-        getStepResults(previousStepResult, execution);
+        stepResult.setStepName(stepName);
+        stepResult.setActionResultsList(getStepResults(previousStepResult, execution));
     }
 
     public String getStepName() {
         return stepName;
     }
 
-    public List<Results> getResults() {
-        return results;
+    public StepResult getStepResult() {
+        return stepResult;
     }
 
     private void preConfigElements(List<Element> elements) {
@@ -101,9 +103,10 @@ public class StepActionPerform {
         }
     }
 
-    private void getStepResults(Status previousStepResult, Execution execution) {
+    private LinkedList<ActionResult> getStepResults(Status previousStepResult, Execution execution) {
+        LinkedList<ActionResult> results = new LinkedList<>();
         logger.info("Previous step result is: " + previousStepResult);
-        if (results.isEmpty()) {
+        if(results.isEmpty()) {
             try {
                 ElementActionPerform elementAction = new ElementActionPerform(execution, environment, elements.get(0), previousStepResult);
                 results.add(elementAction.getAction());
@@ -116,6 +119,7 @@ public class StepActionPerform {
             ElementActionPerform elementAction = new ElementActionPerform(execution, environment, elements.get(i), results.get(results.size() - 1).getStatus());
             results.add(elementAction.getAction());
         }
+        return results;
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Getter
 @Data
-public class Results {
+public class ActionResult {
 
     /*
      * Results class represents the result of the execution of each element during the execution
@@ -30,11 +30,11 @@ public class Results {
     private String startTime;
     private String endTime;
 
-    public Results() {
+    public ActionResult() {
         this.startTime = LocalDateTime.now(ZoneOffset.UTC).toString();
     }
 
-    public Results additional(Status status, String message, Map<String, String> content){
+    public ActionResult additional(Status status, String message, Map<String, String> content){
         this.executionContent.put("actionInfo", message);
         this.status = status;
         this.transaction = StaticVariables.uuidGeneration();
@@ -43,7 +43,7 @@ public class Results {
         return this;
     }
 
-    public Results standard(Status status, String message) {
+    public ActionResult standard(Status status, String message) {
         this.executionContent.put("actionInfo", message);
         this.status = status;
         this.transaction = StaticVariables.uuidGeneration();

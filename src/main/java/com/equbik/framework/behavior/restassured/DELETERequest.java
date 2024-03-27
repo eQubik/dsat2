@@ -2,7 +2,7 @@ package com.equbik.framework.behavior.restassured;
 
 import com.equbik.framework.behavior.TakeAction;
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -25,7 +25,7 @@ public class DELETERequest extends TakeActionRestAssured implements TakeAction {
     }
 
     @Override
-    public Results takeAction() {
+    public ActionResult takeAction() {
         RequestSpecification request = RestAssured.given()
                 .contentType(ContentType.JSON);
         Response response = request.delete(element.getMarker());

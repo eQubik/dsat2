@@ -1,6 +1,6 @@
 package com.equbik.framework.behavior;
 
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
 
 /**
  * Emil Vasilyev
@@ -14,6 +14,6 @@ public interface TakeAction {
      * TakeAction interface should be implemented by those classes that are being used as an Action
      */
 
-    Results takeAction();
+    ActionResult takeAction();
 
 }

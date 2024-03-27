@@ -1,6 +1,7 @@
 package com.equbik.framework.adapters.csv;
 
 import com.equbik.framework.adapters.Adapter;
+import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterMethods;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Scenario;
@@ -26,9 +27,10 @@ public class AdapterCSV extends AdapterMethods implements Adapter {
     private final Scenario scenario;
     private final CSVElementsPerStep elementsPerStep;
 
-    public AdapterCSV(Scenario scenario, MapCSVElements csvElements){
+    public AdapterCSV(Scenario scenario, AdapterConfig adapterConfig){
         this.scenario = scenario;
-        this.elementsPerStep = new CSVElementsPerStep(csvElements);
+        MapCSVElements csvElements = (MapCSVElements) adapterConfig;
+        this.elementsPerStep = new CSVElementsPerStep(scenario, csvElements);
         this.stepElements = stepElements();
     }
 

@@ -2,6 +2,7 @@ package com.equbik.framework.adapters.csv;
 
 import com.equbik.framework.adapters.ElementsPerStep;
 import com.equbik.framework.models.element_model.Element;
+import com.equbik.framework.models.json_model.Scenario;
 import com.equbik.framework.models.json_model.Step;
 
 import java.util.List;
@@ -18,12 +19,15 @@ public class CSVElementsPerStep extends ElementsPerStep {
      * CSVElementsPerStep class forms the list of elements from CSV file that is used as an adapter in the Scenario
      */
 
-    public CSVElementsPerStep(MapCSVElements csvElements) {
-        super(csvElements.csvElements());
+    private final Scenario scenario;
+
+    public CSVElementsPerStep(Scenario scenario, MapCSVElements csvElements) {
+        super(csvElements.elementsList());
+        this.scenario = scenario;
     }
 
     public List<Element> getStepElements(Step step) {
-        return super.getStepElements(step);
+        return super.getStepElements(scenario.getFlowName(), step);
     }
 
 }

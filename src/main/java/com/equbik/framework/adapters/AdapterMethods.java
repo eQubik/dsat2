@@ -27,7 +27,7 @@ public abstract class AdapterMethods {
         Map<String, List<Element>> stepElements = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             try {
-                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(step));
+                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(scenario.getFlowName(), step));
             } catch (Exception e){
                 logger.warning("Skipping execution due to: " + e.getMessage());
                 throw new RuntimeException("Skipping execution due to: " + e.getMessage());

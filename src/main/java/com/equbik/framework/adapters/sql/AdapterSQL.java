@@ -1,6 +1,7 @@
 package com.equbik.framework.adapters.sql;
 
 import com.equbik.framework.adapters.Adapter;
+import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterMethods;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Scenario;
@@ -26,9 +27,10 @@ public class AdapterSQL extends AdapterMethods implements Adapter {
     private final Scenario scenario;
     private final SQLElementsPerStep elementsPerStep;
 
-    public AdapterSQL(Scenario scenario, MapSQLiteElements sqlElements){
+    public AdapterSQL(Scenario scenario, AdapterConfig adapterConfig){
         this.scenario = scenario;
-        this.elementsPerStep = new SQLElementsPerStep(sqlElements);
+        MapSQLiteElements sqlElements = (MapSQLiteElements) adapterConfig;
+        this.elementsPerStep = new SQLElementsPerStep(scenario, sqlElements);
         this.stepElements = stepElements();
     }
 

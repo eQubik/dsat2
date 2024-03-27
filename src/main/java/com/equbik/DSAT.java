@@ -1,16 +1,22 @@
 package com.equbik;
 
+import com.equbik.framework.adapters.Adapter;
+import com.equbik.framework.adapters.AdapterConfig;
+import com.equbik.framework.adapters.AdapterProvider;
+import com.equbik.framework.executions.Execution;
 import com.equbik.framework.executors.Executor;
-import com.equbik.framework.executors.ExecutorProvider;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ScenarioResult;
+import com.equbik.framework.models.artifact_model.SuiteResult;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.models.json_model.Scenario;
 import com.equbik.framework.perform.ScenarioActionPerform;
-import com.equbik.framework.services.JSONParser;
+import com.equbik.framework.perform.SuiteActionPerform;
+import com.equbik.framework.services.Executions;
 import com.equbik.framework.services.StaticVariables;
 
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -27,48 +33,58 @@ public class DSAT {
      */
 
     //TODO
-    // Multiple scenarios, remote execution, name each scenario inside a single execution(to share the state)
+    // Remote execution, name each scenario inside a single execution(to share the state)
 
     private static final Logger logger = Logger.getLogger(DSAT.class.getName());
-    private final Scenario scenario;
-    private final Executor executor;
-    private final boolean print;
+    private final Environment environment;
+    private final HashMap<String, Executor> executors;
+    private final Map<Scenario, Adapter> scenariosElements;
+    private final SuiteResult suiteResult = new SuiteResult();
 
-    public DSAT(String scenarioPath, boolean print) {
-        //Initializing scenario
-        this.scenario = JSONParser.parseScenario(scenarioPath);
-        Environment.Executor executorConfig = scenario.getEnvironment().getExecutor();
-        Environment.Adapter adapter = scenario.getEnvironment().getAdapter();
-        //Checking if executor and adapter are configured
-        if (!isExecutorAndAdapterProvided(executorConfig, adapter))
-            throw new RuntimeException("Executor and adapter are not provided, or not valid.");
-        //Creating an instance of the Executor
-        String executorIgnoreCase = StaticVariables.executors(executorConfig.getType());
-        ExecutorProvider executorProvider = new ExecutorProvider(executorIgnoreCase, executorConfig);
-        this.executor = executorProvider.getExecutor();
-        this.print = print;
+    public DSAT(String environmentPath, String... scenarios) {
+        SuiteActionPerform suiteActions = new SuiteActionPerform(environmentPath, scenarios);
+        this.environment = suiteActions.getEnvironment();
+        this.executors = suiteActions.getExecutors();
+        LinkedList<Scenario> scenariosList = suiteActions.getScenarios();
+        AdapterConfig adapterConfig = suiteActions.getAdapterConfig();
+        this.scenariosElements = scenariosElements(scenariosList, adapterConfig);
+        this.suiteResult.setSuiteName(LocalDateTime.now(ZoneOffset.UTC).toString());
     }
 
-    private boolean isExecutorAndAdapterProvided(Environment.Executor executorConfig, Environment.Adapter adapter) {
-        return executorConfig.getType() != null && adapter != null;
+    public SuiteResult getSuiteResult() {
+        return suiteResult;
     }
 
     public void performScenario() {
-        //Providing ScenarioActionPerform class with the proper config
-        ScenarioActionPerform scenarioActions = new ScenarioActionPerform(scenario, executor);
-        logger.fine("Scenario: " + scenarioActions.getScenario() + " is getting started");
-        scenarioActions.startScenario();
-        if (print) printResults(scenarioActions); //Will be replaced soon
+        LinkedList<ScenarioResult> scenarioResultsList = new LinkedList<>();
+        for(Map.Entry<Scenario, Adapter> scenario : scenariosElements.entrySet()){
+            ScenarioActionPerform scenarioActions = new ScenarioActionPerform(
+                    environment, provideExecutor(scenario.getKey()), scenario.getValue(), scenario.getKey());
+            logger.fine("Scenario: " + scenarioActions.getScenario() + " is getting started");
+            scenarioActions.startScenario();
+            scenarioResultsList.add(scenarioActions.getScenarioResult());
+        }
+        suiteResult.setScenarioResultsList(scenarioResultsList);
     }
 
-    public void printResults(ScenarioActionPerform scenario) {
-        for (Map.Entry<String, List<Results>> entry : scenario.getResultsMap().entrySet()) {
-            String stepName = entry.getKey();
-            List<Results> resultsList = entry.getValue();
-            System.out.println(stepName + ": ");
-            for (Results result : resultsList) {
-                System.out.println(result);
-            }
+    private Map<Scenario, Adapter> scenariosElements(LinkedList<Scenario> scenariosList, AdapterConfig adapterConfig){
+        Map<Scenario, Adapter> scenariosElements = new LinkedHashMap<>();
+        for(Scenario scenario : scenariosList){
+            AdapterProvider adapterProvider = new AdapterProvider(adapterConfig, scenario);
+            scenariosElements.put(scenario, adapterProvider.getAdapter());
+        }
+        return scenariosElements;
+    }
+
+    private Executor provideExecutor(Scenario scenario){
+        if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && scenario.getExecutor().isRemote()) {
+            return executors.get(Executions.selenium + "|remote");
+        } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && !scenario.getExecutor().isRemote()){
+            return executors.get(Executions.selenium + "|local");
+        } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.restassured.toString())){
+            return executors.get(Executions.restassured.toString());
+        } else {
+            throw new RuntimeException("There is no supported executor");
         }
     }
 

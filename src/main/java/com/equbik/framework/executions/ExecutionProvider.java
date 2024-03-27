@@ -25,9 +25,9 @@ public class ExecutionProvider {
     }
 
     private Execution provideExecution(Executor executor){
-        if(executor.getClass().getSimpleName().equals(Executions.Selenium.toString())){
+        if(executor.getClass().getSimpleName().equalsIgnoreCase(Executions.Selenium.toString())){
             return new SeleniumBrowser(executor);
-        } else if (executor.getClass().getSimpleName().equals(Executions.RestAssured.toString())){//STATIC VARIABLE
+        } else if (executor.getClass().getSimpleName().equalsIgnoreCase(Executions.RestAssured.toString())){//STATIC VARIABLE
             return new RestAssuredSetup(executor);
         } else {
             logger.warning("Execution for mentioned Executor is not available. Execution is being Skipped.");

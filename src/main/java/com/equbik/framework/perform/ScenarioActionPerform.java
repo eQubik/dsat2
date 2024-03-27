@@ -1,12 +1,13 @@
 package com.equbik.framework.perform;
 
 import com.equbik.framework.adapters.Adapter;
-import com.equbik.framework.adapters.AdapterProvider;
 import com.equbik.framework.executions.Execution;
 import com.equbik.framework.executions.ExecutionProvider;
 import com.equbik.framework.executions.SeleniumBrowser;
 import com.equbik.framework.executors.Executor;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ScenarioResult;
+import com.equbik.framework.models.artifact_model.StepResult;
+import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.models.json_model.Scenario;
 import com.equbik.framework.models.json_model.Step;
 import com.equbik.framework.services.Executions;
@@ -31,36 +32,40 @@ public class ScenarioActionPerform {
     private final Scenario scenario;
     private final Adapter adapter;
     private final Execution execution;
-    private final Map<String, List<Results>> resultsMap = new LinkedHashMap<>();
+    private final Environment environment;
+    private final ScenarioResult scenarioResult = new ScenarioResult();
 
-    public ScenarioActionPerform(Scenario scenario, Executor executor) {
-        this.scenario = scenario;
-        AdapterProvider adapterProvider = new AdapterProvider(scenario);
-        this.adapter = adapterProvider.getAdapter();
+    public ScenarioActionPerform(Environment environment, Executor executor, Adapter adapter, Scenario scenario) {
+        this.environment = environment;
         ExecutionProvider executionProvider = new ExecutionProvider(executor);
         this.execution = executionProvider.getExecution();
+        this.adapter = adapter;
+        this.scenario = scenario;
         logger.info("Performing scenario: " + this);
-    }
-
-    public Map<String, List<Results>> getResultsMap() {
-        return resultsMap;
     }
 
     public Scenario getScenario() {
         return scenario;
     }
 
+    public ScenarioResult getScenarioResult() {
+        return scenarioResult;
+    }
+
     public void startScenario() {
         List<StepActionPerform> stepsList = new LinkedList<>();
         createStepsMap(scenario, stepsList);
-        executeSteps(stepsList);
+        scenarioResult.setScenarioName(scenario.getFlowName());
+        scenarioResult.setStepResultsList(executeSteps(stepsList));
         postJobs();
     }
 
     private Status previousStepResult() {
         try {
-            Map.Entry<String, List<Results>> lastEntry = resultsMap.entrySet().stream().skip(resultsMap.size() - 1).findFirst().orElse(null);
-            return lastEntry.getValue().get(lastEntry.getValue().size() - 1).getStatus();
+            //Map.Entry<String, List<ActionResult>> lastEntry = resultsMap.entrySet().stream().skip(resultsMap.size() - 1).findFirst().orElse(null);
+            StepResult previousStepResult = scenarioResult.getStepResultsList().stream().skip(scenarioResult.getStepResultsList().size() - 1).findFirst().orElse(null);
+            return previousStepResult.getActionResultsList().getLast().getStatus();
+            //return lastEntry.getValue().get(lastEntry.getValue().size() - 1).getStatus();
         } catch (Exception e) {
             return Status.Null;
         }
@@ -70,7 +75,7 @@ public class ScenarioActionPerform {
         for (Step step : scenario.getSteps()) {
             stepsList.add(new StepActionPerform(
                     execution,
-                    scenario.getEnvironment(),
+                    environment,
                     adapter.stepElements().get(step.getStepName()),
                     initializeStepVariables(step),
                     step.getStepName())
@@ -78,11 +83,15 @@ public class ScenarioActionPerform {
         }
     }
 
-    private void executeSteps(List<StepActionPerform> stepsList) {
+    private LinkedList<StepResult> executeSteps(List<StepActionPerform> stepsList) {
+        LinkedList<StepResult> results = new LinkedList<>();
         for (StepActionPerform stepAction : stepsList) {
             stepAction.process(previousStepResult());
-            resultsMap.put(stepAction.getStepName(), stepAction.getResults());
+            //resultsMap.put(stepAction.getStepName(), stepAction.getResults());
+            results.add(stepAction.getStepResult());
         }
+        System.out.println(results);
+        return results;
     }
 
     private void postJobs(){

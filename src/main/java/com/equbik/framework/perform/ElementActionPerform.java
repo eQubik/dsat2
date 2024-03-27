@@ -2,7 +2,7 @@ package com.equbik.framework.perform;
 
 import com.equbik.framework.behavior.selenium.advanced.AWebElement;
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.services.Executions;
@@ -44,8 +44,8 @@ public class ElementActionPerform {
         logger.info("Element action is being performed: " + this);
     }
 
-    public Results getAction() {
-        Results result = new Results();
+    public ActionResult getAction() {
+        ActionResult result = new ActionResult();
         if (previousStatus.equals(Status.Success) || previousStatus.equals(Status.Null)) {
             logger.fine("Previous result is: " + previousStatus + ". Continue performing...");
             return invokeAction();
@@ -54,11 +54,11 @@ public class ElementActionPerform {
         }
     }
 
-    private Results invokeAction() {
+    private ActionResult invokeAction() {
         try {
             Class<?> actionClass = getActionClass();
             Object instance = getActionInstance(actionClass);
-            Results result = (Results) actionClass.getMethod("takeAction").invoke(instance);
+            ActionResult result = (ActionResult) actionClass.getMethod("takeAction").invoke(instance);
             logger.info("Result is: " + result);
             return result;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -67,7 +67,7 @@ public class ElementActionPerform {
         }
     }
 
-    private Results skippingPart(Results result) {
+    private ActionResult skippingPart(ActionResult result) {
         StatusMessage statusMessage = new StatusMessage(Status.Skipped, element, element.getActionType().getActionName());
         logger.warning(element.getId() + " element action " + element.getActionType().getActionName() + " is being skipped");
         return result.standard(Status.Skipped, statusMessage.getStatusMessage().trim());
@@ -110,7 +110,7 @@ public class ElementActionPerform {
     }
 
     private AWebElement advancedElement() {
-        return new AWebElement(environment.getExecutor().getHighlight(), environment.getExecutor().getSleep());
+        return new AWebElement(environment);
     }
 
     private boolean isSelenium() {

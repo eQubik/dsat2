@@ -1,5 +1,6 @@
 package com.equbik.framework.adapters.csv;
 
+import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.services.Fields;
 import com.equbik.framework.services.StaticVariables;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class MapCSVElements {
+public class MapCSVElements implements AdapterConfig {
 
     /*
      * MapCSVToElement class is used for mapping csv model to Element class
@@ -45,7 +46,8 @@ public class MapCSVElements {
         this.csvFile = csvFile;
     }
 
-    public List<Element> csvElements() {
+    @Override
+    public List<Element> elementsList() {
         List<Element> elementsList = new ArrayList<>();
         try (Reader reader = new FileReader(csvFile, StandardCharsets.UTF_8);
              CSVParser csvParser = new CSVParser(reader, getFormat())) {

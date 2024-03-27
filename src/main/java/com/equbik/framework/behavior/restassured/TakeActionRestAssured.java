@@ -1,6 +1,6 @@
 package com.equbik.framework.behavior.restassured;
 
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.Status;
@@ -26,8 +26,8 @@ public class TakeActionRestAssured {
         this.element = element;
     }
 
-    public Results takeAction(Response response, String actionName) {
-        Results result = new Results();
+    public ActionResult takeAction(Response response, String actionName) {
+        ActionResult result = new ActionResult();
         StatusMessage statusMessage;
         ValidatableResponse validatableResponse;
         try {

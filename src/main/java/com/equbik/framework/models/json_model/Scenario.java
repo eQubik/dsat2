@@ -25,7 +25,17 @@ public class Scenario {
     private String description;
     @JsonProperty("flow_name")
     private String flowName;
-    private Environment environment;
+    private Executor executor;
     private List<Step> steps;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class Executor {
+        private String name;
+        private boolean remote;
+    }
 
 }

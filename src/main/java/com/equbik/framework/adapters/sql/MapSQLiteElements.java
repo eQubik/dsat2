@@ -1,5 +1,6 @@
 package com.equbik.framework.adapters.sql;
 
+import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.services.Fields;
 import com.equbik.framework.services.StaticVariables;
@@ -15,29 +16,23 @@ import java.util.logging.Logger;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class MapSQLiteElements {
+public class MapSQLiteElements implements AdapterConfig {
 
     /*
      * MapSQLiteElements class is used for mapping SQLite model to Element class
      */
 
     private static final Logger logger = Logger.getLogger(MapSQLiteElements.class.getName());
-    private static MapSQLiteElements sqlLite = null;
     private final String jdbcURL;
     private final String tableName;
 
-    private MapSQLiteElements(String dbPath, String tableName){
+    public MapSQLiteElements(String dbPath, String tableName){
         this.jdbcURL = dbPath;
         this.tableName = tableName;
     }
 
-    public static MapSQLiteElements getInstance(String dbPath, String tableName){
-        if(sqlLite == null)
-            sqlLite = new MapSQLiteElements(dbPath, tableName);
-        return sqlLite;
-    }
-
-    public List<Element> dbElements(){
+    @Override
+    public List<Element> elementsList(){
         try (Connection connection = DriverManager.getConnection(jdbcURL);
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
              ResultSet resultSet = preparedStatement.executeQuery()) {

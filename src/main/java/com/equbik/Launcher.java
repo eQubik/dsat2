@@ -28,12 +28,23 @@ public class Launcher {
 
         //DEV
 
-        String scenarioPath = "C:\\Users\\Emil\\IdeaProjects\\DSATLOGIC\\TIM\\scenarios\\sc1.json";
-        DSAT app = new DSAT(scenarioPath, false);
-
-        logger.info("Creating an app execution. Scenario is: " + scenarioPath);
+        String envPath = "C:\\Users\\Emil\\IdeaProjects\\DSATLOGIC\\TIM\\scenarios\\env.json";
+        String[] scenarios = {
+                "C:\\Users\\Emil\\IdeaProjects\\DSATLOGIC\\TIM\\scenarios\\sc1.json"
+        };
+        DSAT app = new DSAT(envPath, scenarios);
         app.performScenario();
+        System.out.println(app.getSuiteResult());
 
+        /*
+                Environment.Adapter adapter = environment.getAdapter();
+        //Checking if an adapter is configured
+        if (!isAdapterProvided(adapter))
+            throw new RuntimeException("Adapter is not provided, or not valid");
+                private boolean isAdapterProvided(Environment.Adapter adapter) {
+        return adapter != null;
+    }
+         */
     }
 
 }

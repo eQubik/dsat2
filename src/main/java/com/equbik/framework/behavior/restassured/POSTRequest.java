@@ -2,7 +2,7 @@ package com.equbik.framework.behavior.restassured;
 
 import com.equbik.framework.behavior.TakeAction;
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.Results;
+import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.services.StaticVariables;
 import io.restassured.RestAssured;
@@ -26,7 +26,7 @@ public class POSTRequest extends TakeActionRestAssured implements TakeAction {
     }
 
     @Override
-    public Results takeAction() {
+    public ActionResult takeAction() {
         RequestSpecification request = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(element.getCode());

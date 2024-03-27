@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Emil Vasilyev
@@ -22,27 +23,8 @@ public class Environment {
      * Environment class represents environment settings
      */
 
-    private Executor executor;
+    private Map<String, Executor> executor;
     private Adapter adapter;
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    public static class Highlight{
-        private String color;
-        private int border;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    public static class Sleep{
-        private Long sec;
-    }
 
     @Getter
     @Setter
@@ -86,6 +68,25 @@ public class Environment {
         private Long socketTimeout;
         @JsonProperty("connection_timeout")
         private Long connectionTimeout;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Highlight{
+        private String color;
+        private int border;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Sleep{
+        private Long sec;
     }
 
 }

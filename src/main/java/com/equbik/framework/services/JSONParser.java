@@ -1,5 +1,6 @@
 package com.equbik.framework.services;
 
+import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.models.json_model.Scenario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,11 +23,11 @@ public class JSONParser {
 
     private static final Logger logger = Logger.getLogger(JSONParser.class.getName());
 
-    public static Scenario parseScenario(String json) {
+    public static Scenario parseScenario(String scJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         Scenario scenario;
         try {
-            Path filePath = Path.of(json);
+            Path filePath = Path.of(scJson);
             String content = Files.readString(filePath);
             scenario = objectMapper.readValue(content, Scenario.class);
         } catch (IOException e) {
@@ -34,6 +35,20 @@ public class JSONParser {
             throw new RuntimeException("Skipping execution due to: " + e.getMessage());
         }
         return scenario;
+    }
+
+    public static Environment parseEnvironment(String envJson) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Environment environment;
+        try {
+            Path filePath = Path.of(envJson);
+            String content = Files.readString(filePath);
+            environment = objectMapper.readValue(content, Environment.class);
+        } catch (IOException e) {
+            logger.warning("Skipping execution due to: " + e.getMessage());
+            throw new RuntimeException("Skipping execution due to: " + e.getMessage());
+        }
+        return environment;
     }
 
 }

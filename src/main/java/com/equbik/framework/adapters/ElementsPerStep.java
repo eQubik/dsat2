@@ -25,12 +25,13 @@ public class ElementsPerStep {
         this.elementsList = elementsList;
     }
 
-    public List<Element> getStepElements(Step step) {
+    public List<Element> getStepElements(String flow, Step step) {
         List<Element> elementsPerStep = new ArrayList<>();
         List<String> elementsInStep;
         elementsInStep = step.getElements();
         for (String element : elementsInStep) {
             Optional<Element> matchingElement = elementsList.stream()
+                    .filter(e -> e.getScenario().equals(flow))
                     .filter(e -> e.getStep().equals(step.getStepName()))
                     .filter(e -> e.getName().equals(element))
                     .findFirst();
