@@ -76,32 +76,10 @@ public class StaticVariables {
         return actionsMap.get(action);
     }
 
-    //Used to change browser tabs during the test execution
-    public static Set<String> tabs = new LinkedHashSet<>();
-
-    //...
-    //TODO
-    // Shared field
-    public static Map<String, Integer> ids = new HashMap<>();
-
-    //todo
-    // temp var
-    public static Map<Element, Boolean> isConfigured = new HashMap<>();
-
     //When you start the app, you need to mention the appropriate executor's name
     //which is typically starts with uppercase because it's a Java class name, however you can add another forms of the
     //executor's names for easy of use or if you have an OCD
     public static String executors(String executor){
-//        Uncomment this part to add other forms of the executors names
-//        Map<List<String>, String> executorsMap = new HashMap<>();
-//        List<String> selenium = new ArrayList<>();
-//        selenium.add("SELENIUM");
-//        selenium.add("selenium");
-//        selenium.add("Selenium");
-//        selenium.add("sel");
-//        executorsMap.put(selenium, "Selenium");
-//        if (selenium.contains(executor)) {
-//            return executorsMap.get(selenium);
         if(executor.equalsIgnoreCase(Executions.selenium.toString())){
             return Executions.Selenium.toString();
         } else if(executor.equalsIgnoreCase(Executions.restassured.toString())){
@@ -110,5 +88,19 @@ public class StaticVariables {
             return null;
         }
     }
+
+    //Used to change browser tabs during the test execution
+    public static Set<String> tabs = new LinkedHashSet<>();
+
+    //TODO
+    // Shared field
+    public static Map<String, Integer> ids = new HashMap<>();
+
+    //TODO
+    // temp var
+    public static Map<Element, Boolean> isConfigured = new HashMap<>();
+
+    //
+    public static Map<String, String> sharedData = new HashMap<>();
 
 }

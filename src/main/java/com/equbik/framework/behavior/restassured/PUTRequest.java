@@ -4,6 +4,7 @@ import com.equbik.framework.behavior.TakeAction;
 import com.equbik.framework.executions.Execution;
 import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
+import com.equbik.framework.services.HTTPMethods;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -29,8 +30,7 @@ public class PUTRequest extends TakeActionRestAssured implements TakeAction {
         RequestSpecification request = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(element.getCode());
-        Response response = request.put(element.getMarker());
-        return takeAction(response, this.getClass().getSimpleName());
+        return takeAction(HTTPMethods.PUT, request, element.getMarker(), this.getClass().getSimpleName());
     }
 
 }

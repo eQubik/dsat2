@@ -4,6 +4,7 @@ import com.equbik.framework.behavior.TakeAction;
 import com.equbik.framework.executions.Execution;
 import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
+import com.equbik.framework.services.HTTPMethods;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -28,8 +29,7 @@ public class GETRequest extends TakeActionRestAssured implements TakeAction {
     public ActionResult takeAction() {
         RequestSpecification request = RestAssured.given()
                 .contentType(ContentType.JSON);
-        Response response = request.get(element.getMarker());
-        return takeAction(response, this.getClass().getSimpleName());
+        return takeAction(HTTPMethods.GET, request, element.getMarker(), this.getClass().getSimpleName());
     }
 
 }

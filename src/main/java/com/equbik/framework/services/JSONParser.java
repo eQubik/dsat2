@@ -1,12 +1,15 @@
 package com.equbik.framework.services;
 
+import com.equbik.framework.models.artifact_model.SuiteResult;
 import com.equbik.framework.models.json_model.Environment;
 import com.equbik.framework.models.json_model.Scenario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -49,6 +52,18 @@ public class JSONParser {
             throw new RuntimeException("Skipping execution due to: " + e.getMessage());
         }
         return environment;
+    }
+
+    public static void convertSuite(SuiteResult suiteResult) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Random random = new Random();
+            File file = new File("src/main/resources/" + random.nextInt() + ".json");
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, suiteResult);
+        } catch (IOException e) {
+            logger.warning("Skipping execution due to: " + e.getMessage());
+            throw new RuntimeException("Skipping execution due to: " + e.getMessage());
+        }
     }
 
 }

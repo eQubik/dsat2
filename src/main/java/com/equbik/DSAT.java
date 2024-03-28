@@ -3,7 +3,6 @@ package com.equbik;
 import com.equbik.framework.adapters.Adapter;
 import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterProvider;
-import com.equbik.framework.executions.Execution;
 import com.equbik.framework.executors.Executor;
 import com.equbik.framework.models.artifact_model.ScenarioResult;
 import com.equbik.framework.models.artifact_model.SuiteResult;
@@ -12,7 +11,7 @@ import com.equbik.framework.models.json_model.Scenario;
 import com.equbik.framework.perform.ScenarioActionPerform;
 import com.equbik.framework.perform.SuiteActionPerform;
 import com.equbik.framework.services.Executions;
-import com.equbik.framework.services.StaticVariables;
+import com.equbik.framework.services.JSONParser;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -52,10 +51,11 @@ public class DSAT {
     }
 
     public SuiteResult getSuiteResult() {
+        JSONParser.convertSuite(suiteResult);
         return suiteResult;
     }
 
-    public void performScenario() {
+    public void performSuite() {
         LinkedList<ScenarioResult> scenarioResultsList = new LinkedList<>();
         for(Map.Entry<Scenario, Adapter> scenario : scenariosElements.entrySet()){
             ScenarioActionPerform scenarioActions = new ScenarioActionPerform(

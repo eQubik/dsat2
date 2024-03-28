@@ -87,10 +87,8 @@ public class ScenarioActionPerform {
         LinkedList<StepResult> results = new LinkedList<>();
         for (StepActionPerform stepAction : stepsList) {
             stepAction.process(previousStepResult());
-            //resultsMap.put(stepAction.getStepName(), stepAction.getResults());
             results.add(stepAction.getStepResult());
         }
-        System.out.println(results);
         return results;
     }
 
