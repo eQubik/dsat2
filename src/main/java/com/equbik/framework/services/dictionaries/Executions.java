@@ -13,6 +13,8 @@ public enum Executions {
     SeleniumBrowser,
     RestAssured,
     restassured,
-    RestAssuredSetup
+    RestAssuredSetup,
+    local,
+    remote
 
 }

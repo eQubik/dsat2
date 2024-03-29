@@ -69,35 +69,37 @@ public class SuiteActionPerform {
     private HashMap<String, Environment.Executor> setExecutorsConfig(Environment environment,
                                                                      HashMap<String, Environment.Executor> executorConfigs){
         List<Environment.Executor> executors = environment.getExecutor().values().stream().toList();
-        Environment.Executor seleniumRemote = seleniumRemote(executors);
-        Environment.Executor seleniumLocal = seleniumLocal(executors);
-        Environment.Executor restassured = restassured(executors);
-        if(seleniumRemote != null) executorConfigs.put(Executions.selenium + "|remote", seleniumRemote);
-        if(seleniumLocal != null) executorConfigs.put(Executions.selenium + "|local", seleniumLocal);
-        if(restassured != null) executorConfigs.put(Executions.restassured.toString(), restassured);
+        executorConfigs.putAll(seleniumRemote(executors, executorConfigs));
+        executorConfigs.putAll(seleniumLocal(executors, executorConfigs));
+        executorConfigs.putAll(restassured(executors, executorConfigs));
         return executorConfigs;
     }
 
-    private Environment.Executor seleniumRemote(List<Environment.Executor> executors){
-        return executors.stream()
+    private HashMap<String, Environment.Executor> seleniumRemote(List<Environment.Executor> executors,
+                                                HashMap<String, Environment.Executor> executorConfigs){
+        executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.selenium.toString()) &&
                         executor.isRemote())
-                .findFirst().orElse(null);
+                .findFirst().ifPresent(executor -> executorConfigs.put(Executions.selenium + "." + Executions.remote, executor));
+        return executorConfigs;
     }
 
-    private Environment.Executor seleniumLocal(List<Environment.Executor> executors){
-        return executors.stream()
+    private HashMap<String, Environment.Executor> seleniumLocal(List<Environment.Executor> executors,
+                                                                 HashMap<String, Environment.Executor> executorConfigs){
+        executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.selenium.toString()) &&
                         !executor.isRemote())
-                .findFirst().orElse(null);
+                .findFirst().ifPresent(executor -> executorConfigs.put(Executions.selenium + "." + Executions.local, executor));
+        return executorConfigs;
     }
 
-    private Environment.Executor restassured(List<Environment.Executor> executors){
-        return executors.stream()
+    private HashMap<String, Environment.Executor> restassured(List<Environment.Executor> executors,
+                                                                HashMap<String, Environment.Executor> executorConfigs){
+        executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.restassured.toString()))
-                .findFirst().orElse(null);
+                .findFirst().ifPresent(executor -> executorConfigs.put(Executions.restassured.toString(), executor));
+        return executorConfigs;
     }
-
     private HashMap<String, Executor> setExecutors(HashMap<String, Environment.Executor> executorConfigs){
         HashMap<String, Executor> executors = new HashMap<>();
         for(Map.Entry<String, Environment.Executor> executor : executorConfigs.entrySet()){
