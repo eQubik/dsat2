@@ -30,8 +30,7 @@ import java.util.logging.Logger;
 public class DSAT {
 
     /*
-     * DSAT class is the main class of the framework. To start the app just provide the valid scenario.
-     * Feel free to improve\delete\add anything
+     * DSAT class is the main class of the framework. To start the app just provide the valid environment and scenario/scenarios.
      */
 
     //TODO
@@ -50,7 +49,6 @@ public class DSAT {
         LinkedList<Scenario> scenariosList = suiteActions.getScenarios();
         AdapterConfig adapterConfig = suiteActions.getAdapterConfig();
         this.scenariosElements = scenariosElements(scenariosList, adapterConfig);
-        this.suiteResult.setSuiteName(LocalDateTime.now(ZoneOffset.UTC).toString());
     }
 
     public SuiteResult getSuiteResult() {
@@ -59,6 +57,7 @@ public class DSAT {
     }
 
     public void performSuite() {
+        this.suiteResult.setSuiteName(LocalDateTime.now(ZoneOffset.UTC).toString());
         LinkedList<ScenarioResult> scenarioResultsList = new LinkedList<>();
         for(Map.Entry<Scenario, Adapter> scenario : scenariosElements.entrySet()){
             ScenarioActionPerform scenarioActions = new ScenarioActionPerform(
@@ -67,7 +66,7 @@ public class DSAT {
             scenarioActions.startScenario();
             scenarioResultsList.add(scenarioActions.getScenarioResult());
         }
-        suiteResult.setScenarioResultsList(scenarioResultsList);
+        this.suiteResult.setScenarioResultsList(scenarioResultsList);
     }
 
     private Map<Scenario, Adapter> scenariosElements(LinkedList<Scenario> scenariosList, AdapterConfig adapterConfig){
@@ -80,6 +79,8 @@ public class DSAT {
     }
 
     private Executor provideExecutor(Scenario scenario){
+        //TODO
+        // Exceptions and remove hardcode
         if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && scenario.getExecutor().isRemote()) {
             return executors.get(Executions.selenium + "|remote");
         } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && !scenario.getExecutor().isRemote()){

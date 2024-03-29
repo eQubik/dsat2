@@ -4,6 +4,7 @@ import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.input_models.Step;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ElementsPerStep {
     }
 
     public List<Element> getStepElements(String scenario, Step step) {
-        List<Element> elementsPerStep = new ArrayList<>();
+        List<Element> elementsPerStep = new LinkedList<>();
         List<String> elementsInStep;
         elementsInStep = step.getElements();
         for (String element : elementsInStep) {
@@ -38,6 +39,8 @@ public class ElementsPerStep {
             matchingElement.ifPresent(elementsPerStep::add);
         }
         return elementsPerStep;
+        //TODO
+        // Exception if no elements presented?
     }
 
 }
