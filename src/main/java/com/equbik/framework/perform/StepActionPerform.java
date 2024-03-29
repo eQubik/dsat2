@@ -44,9 +44,11 @@ public class StepActionPerform {
     }
 
     public void process(Status previousStepResult) {
-        preConfigElements(elements);
         stepResult.setStepName(stepName);
-        stepResult.setActionResultsList(getStepResults(previousStepResult, execution));
+        LinkedList<ActionResult> actionsResults = new LinkedList<>();
+        preConfigElements(elements);
+        getStepResults(actionsResults, previousStepResult, execution);
+        stepResult.setActionResultsList(actionsResults);
     }
 
     public String getStepName() {
@@ -116,8 +118,7 @@ public class StepActionPerform {
         }
     }
 
-    private LinkedList<ActionResult> getStepResults(Status previousStepResult, Execution execution) {
-        LinkedList<ActionResult> results = new LinkedList<>();
+    private void getStepResults(LinkedList<ActionResult> results, Status previousStepResult, Execution execution) {
         logger.info("Previous step result is: " + previousStepResult);
         if(results.isEmpty()) {
             try {
@@ -132,7 +133,6 @@ public class StepActionPerform {
             ElementActionPerform elementAction = new ElementActionPerform(execution, environment, elements.get(i), results.get(results.size() - 1).getStatus());
             results.add(elementAction.getAction());
         }
-        return results;
     }
 
     @Override
