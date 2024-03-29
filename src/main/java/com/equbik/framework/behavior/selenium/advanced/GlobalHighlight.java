@@ -1,6 +1,6 @@
 package com.equbik.framework.behavior.selenium.advanced;
 
-import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.models.input_models.Environment;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class GlobalHighlight {
 
     /*
-     * GlobalHighlight class ...
+     * GlobalHighlight class uses JS executor to adjust custom style to web element
      */
 
     private static final Logger logger = Logger.getLogger(GlobalHighlight.class.getName());

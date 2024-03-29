@@ -1,6 +1,5 @@
-package com.equbik.framework.models.json_model;
+package com.equbik.framework.models.input_models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -23,8 +22,7 @@ public class Scenario {
      */
 
     private String description;
-    @JsonProperty("flow_name")
-    private String flowName;
+    private String name;
     private Executor executor;
     private List<Step> steps;
 

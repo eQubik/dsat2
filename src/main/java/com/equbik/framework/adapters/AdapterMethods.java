@@ -1,8 +1,9 @@
 package com.equbik.framework.adapters;
 
+import com.equbik.framework.adapters.exceptions.AdapterException;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.models.json_model.Scenario;
-import com.equbik.framework.models.json_model.Step;
+import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.models.input_models.Step;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 public abstract class AdapterMethods {
 
     /*
-     * AdapterMethods class ...
+     * AdapterMethods class implements repeatable stepElements method used in inherited Adapter classes
      */
 
     private static final Logger logger = Logger.getLogger(AdapterMethods.class.getName());
@@ -27,10 +28,10 @@ public abstract class AdapterMethods {
         Map<String, List<Element>> stepElements = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             try {
-                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(scenario.getFlowName(), step));
+                stepElements.put(step.getStepName(), elementsPerStep.getStepElements(scenario.getName(), step));
             } catch (Exception e){
-                logger.warning("Skipping execution due to: " + e.getMessage());
-                throw new RuntimeException("Skipping execution due to: " + e.getMessage());
+                logger.warning("Forming Step elements map skipped due to: " + e.getMessage());
+                throw new AdapterException("Forming Step elements map skipped due to: " + e.getMessage());
             }
         }
         return stepElements;

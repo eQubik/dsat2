@@ -10,6 +10,10 @@ import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.StatusMessage;
 import com.equbik.framework.services.dictionaries.Status;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.html5.LocalStorage;
+import org.openqa.selenium.remote.RemoteExecuteMethod;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.html5.RemoteWebStorage;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.HashMap;
@@ -21,7 +25,7 @@ import java.util.Map;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class ThreadSleep implements TakeAction {
+public class GetLocalStorage implements TakeAction {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -29,7 +33,7 @@ public class ThreadSleep implements TakeAction {
     private final AWebElement aWebElement;
     private final Map<String, String> additionalMessage = new HashMap<>();
 
-    public ThreadSleep(Execution execution, Element element, AWebElement advancedElement) {
+    public GetLocalStorage(Execution execution, Element element, AWebElement advancedElement) {
         SeleniumBrowser browser = (SeleniumBrowser) execution;
         this.driver = browser.getDriver();
         this.wait = browser.getWait();
@@ -42,7 +46,10 @@ public class ThreadSleep implements TakeAction {
         ActionResult result = new ActionResult();
         StatusMessage statusMessage;
         try {
-            Thread.sleep(Integer.parseInt(element.getValue()) * 1000L);
+            RemoteExecuteMethod executeMethod = new RemoteExecuteMethod((RemoteWebDriver) driver);
+            RemoteWebStorage webStorage = new RemoteWebStorage(executeMethod);
+            LocalStorage local = webStorage.getLocalStorage();
+            StaticVariables.sharedData.put(String.valueOf(element.getId()), local.getItem(element.getMarker()));
             statusMessage = new StatusMessage(Status.Success, element, this.getClass().getSimpleName());
             return result.additional(Status.Success, statusMessage.getStatusMessage().trim(), content());
         } catch (Exception e) {

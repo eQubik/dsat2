@@ -4,18 +4,21 @@ import com.equbik.framework.adapters.Adapter;
 import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterProvider;
 import com.equbik.framework.executors.Executor;
-import com.equbik.framework.models.artifact_model.ScenarioResult;
-import com.equbik.framework.models.artifact_model.SuiteResult;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.models.json_model.Scenario;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.models.output_models.ScenarioResult;
+import com.equbik.framework.models.output_models.SuiteResult;
 import com.equbik.framework.perform.ScenarioActionPerform;
 import com.equbik.framework.perform.SuiteActionPerform;
-import com.equbik.framework.services.Executions;
 import com.equbik.framework.services.JSONParser;
+import com.equbik.framework.services.dictionaries.Executions;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**

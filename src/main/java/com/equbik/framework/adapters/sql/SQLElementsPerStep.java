@@ -2,8 +2,8 @@ package com.equbik.framework.adapters.sql;
 
 import com.equbik.framework.adapters.ElementsPerStep;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.models.json_model.Scenario;
-import com.equbik.framework.models.json_model.Step;
+import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.models.input_models.Step;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class SQLElementsPerStep extends ElementsPerStep {
 
     /*
-     * SQLElementsPerStep class ...
+     * SQLElementsPerStep class forms the list of elements from SQLite db for each scenario step
      */
 
     private final Scenario scenario;
@@ -27,7 +27,7 @@ public class SQLElementsPerStep extends ElementsPerStep {
     }
 
     public List<Element> getStepElements(Step step) {
-        return super.getStepElements(scenario.getFlowName(), step);
+        return super.getStepElements(scenario.getName(), step);
     }
 
 }

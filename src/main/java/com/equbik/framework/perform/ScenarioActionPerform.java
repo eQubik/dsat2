@@ -5,15 +5,18 @@ import com.equbik.framework.executions.Execution;
 import com.equbik.framework.executions.ExecutionProvider;
 import com.equbik.framework.executions.SeleniumBrowser;
 import com.equbik.framework.executors.Executor;
-import com.equbik.framework.models.artifact_model.ScenarioResult;
-import com.equbik.framework.models.artifact_model.StepResult;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.models.json_model.Scenario;
-import com.equbik.framework.models.json_model.Step;
-import com.equbik.framework.services.Executions;
-import com.equbik.framework.services.Status;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.models.input_models.Step;
+import com.equbik.framework.models.output_models.ScenarioResult;
+import com.equbik.framework.models.output_models.StepResult;
+import com.equbik.framework.services.dictionaries.Executions;
+import com.equbik.framework.services.dictionaries.Status;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +28,7 @@ import java.util.logging.Logger;
 public class ScenarioActionPerform {
 
     /*
-     * ScenarioActionPerform class is doing a lot of things. Creates a Steps map, initializes Execution and Adapter, doing post jobs
+     * ScenarioActionPerform class creates a Steps map, initializes Execution and Adapter, doing post jobs
      */
 
     private static final Logger logger = Logger.getLogger(ScenarioActionPerform.class.getName());
@@ -55,17 +58,15 @@ public class ScenarioActionPerform {
     public void startScenario() {
         List<StepActionPerform> stepsList = new LinkedList<>();
         createStepsMap(scenario, stepsList);
-        scenarioResult.setScenarioName(scenario.getFlowName());
+        scenarioResult.setScenarioName(scenario.getName());
         scenarioResult.setStepResultsList(executeSteps(stepsList));
         postJobs();
     }
 
     private Status previousStepResult() {
         try {
-            //Map.Entry<String, List<ActionResult>> lastEntry = resultsMap.entrySet().stream().skip(resultsMap.size() - 1).findFirst().orElse(null);
             StepResult previousStepResult = scenarioResult.getStepResultsList().stream().skip(scenarioResult.getStepResultsList().size() - 1).findFirst().orElse(null);
             return previousStepResult.getActionResultsList().getLast().getStatus();
-            //return lastEntry.getValue().get(lastEntry.getValue().size() - 1).getStatus();
         } catch (Exception e) {
             return Status.Null;
         }

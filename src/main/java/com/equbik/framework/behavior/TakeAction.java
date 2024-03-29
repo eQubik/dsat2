@@ -1,6 +1,6 @@
 package com.equbik.framework.behavior;
 
-import com.equbik.framework.models.artifact_model.ActionResult;
+import com.equbik.framework.models.output_models.ActionResult;
 
 /**
  * Emil Vasilyev

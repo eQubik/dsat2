@@ -1,7 +1,7 @@
 package com.equbik.framework.behavior.selenium.advanced;
 
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.services.Executions;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.services.dictionaries.Executions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -14,7 +14,8 @@ import org.openqa.selenium.WebElement;
 public class AWebElement {
 
     /*
-     * AWebElement class ...
+     * AWebElement class. A stands for Advanced, means that you can inject advanced options, like Global sleep and
+     * highlighting all the used in scenario elements
      */
 
     private final GlobalHighlight globalHighlight;

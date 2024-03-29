@@ -1,6 +1,7 @@
 package com.equbik.framework.services;
 
 import com.equbik.framework.models.element_model.Element;
+import com.equbik.framework.services.dictionaries.Status;
 
 import java.util.HashMap;
 import java.util.Map;

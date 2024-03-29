@@ -1,11 +1,11 @@
 package com.equbik.framework.behavior.restassured;
 
-import com.equbik.framework.models.artifact_model.ActionResult;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.services.HTTPMethods;
+import com.equbik.framework.models.output_models.ActionResult;
 import com.equbik.framework.services.StaticVariables;
-import com.equbik.framework.services.Status;
 import com.equbik.framework.services.StatusMessage;
+import com.equbik.framework.services.dictionaries.HTTPMethods;
+import com.equbik.framework.services.dictionaries.Status;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -38,7 +38,7 @@ public class TakeActionRestAssured {
                     ResponseVerify.responseData(additionalMessage, validatableResponse));
             return result.additional(Status.Success, statusMessage.getStatusMessage().trim(), content(validatableResponse));
         } catch (Exception e) {
-            additionalMessage.put("error", e.getMessage());
+            additionalMessage.put("failure", e.getMessage());
             statusMessage = new StatusMessage(Status.Failed, element, actionName, additionalMessage);
             return result.standard(Status.Failed, statusMessage.getStatusMessage().trim());
         }

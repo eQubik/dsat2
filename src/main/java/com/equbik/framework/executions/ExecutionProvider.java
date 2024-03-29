@@ -1,7 +1,9 @@
 package com.equbik.framework.executions;
 
+import com.equbik.framework.executions.exceptions.ExecutionException;
 import com.equbik.framework.executors.Executor;
-import com.equbik.framework.services.Executions;
+import com.equbik.framework.executors.RestAssured;
+import com.equbik.framework.executors.Selenium;
 
 import java.util.logging.Logger;
 
@@ -25,13 +27,13 @@ public class ExecutionProvider {
     }
 
     private Execution provideExecution(Executor executor){
-        if(executor.getClass().getSimpleName().equalsIgnoreCase(Executions.Selenium.toString())){
+        if(executor instanceof Selenium){
             return new SeleniumBrowser(executor);
-        } else if (executor.getClass().getSimpleName().equalsIgnoreCase(Executions.RestAssured.toString())){//STATIC VARIABLE
+        } else if (executor instanceof RestAssured){
             return new RestAssuredSetup(executor);
         } else {
             logger.warning("Execution for mentioned Executor is not available. Execution is being Skipped.");
-            throw new RuntimeException("Execution for mentioned Executor is not available");
+            throw new ExecutionException("Execution for mentioned Executor is not available");
         }
     }
 

@@ -2,13 +2,15 @@ package com.equbik.framework.perform;
 
 import com.equbik.framework.behavior.selenium.advanced.AWebElement;
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.ActionResult;
+import com.equbik.framework.executions.RestAssuredSetup;
+import com.equbik.framework.executions.SeleniumBrowser;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.services.Executions;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.output_models.ActionResult;
+import com.equbik.framework.perform.exceptions.ElementActionException;
 import com.equbik.framework.services.StaticVariables;
-import com.equbik.framework.services.Status;
 import com.equbik.framework.services.StatusMessage;
+import com.equbik.framework.services.dictionaries.Status;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +30,6 @@ public class ElementActionPerform {
 
     private static final Logger logger = Logger.getLogger(ElementActionPerform.class.getName());
     private final Execution execution;
-    private final String executionName;
     private final Environment environment;
     private final Element element;
     private final String action;
@@ -36,7 +37,6 @@ public class ElementActionPerform {
 
     public ElementActionPerform(Execution execution, Environment environment, Element element, Status status) {
         this.execution = execution;
-        this.executionName = execution.getClass().getSimpleName();
         this.environment = environment;
         this.element = element;
         this.action = element.getActionType().getActionName();
@@ -63,7 +63,7 @@ public class ElementActionPerform {
             return result;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             logger.warning("Action invocation failure. Execution is being Skipped.");
-            throw new RuntimeException("Action invocation failure");
+            throw new ElementActionException("Action invocation failure: " + e.getMessage());
         }
     }
 
@@ -81,11 +81,11 @@ public class ElementActionPerform {
                 return Class.forName("com.equbik.framework.behavior.restassured." + action);
             } else {
                 logger.warning("There is no any available action for the mentioned Execution. Execution is being Skipped.");
-                throw new RuntimeException("There is no any available action for the mentioned Execution");
+                throw new ElementActionException("There is no any available action for the mentioned Execution");
             }
         } catch (ClassNotFoundException e) {
             logger.warning("Mentioned Action is not available in the current Execution. Execution is being Skipped.");
-            throw new RuntimeException("Mentioned Action is not available in the current Execution");
+            throw new ElementActionException("Mentioned Action is not available in the current Execution");
         }
     }
 
@@ -99,13 +99,13 @@ public class ElementActionPerform {
                 Constructor<?> constructor = actionClass.getDeclaredConstructor(Execution.class, Element.class);
                 return constructor.newInstance(execution, element);
             } else {
-                logger.warning("There is no any available action for the mentioned Execution. Execution is being Skipped.");
-                throw new RuntimeException("There is no any available action for the mentioned Execution");
+                logger.warning("Execution is not accessible at the moment. Execution is being Skipped.");
+                throw new ElementActionException("Execution is not accessible at the moment");
             }
         } catch (NoSuchMethodException | InvocationTargetException |
                  InstantiationException | IllegalAccessException e) {
-            logger.warning("Action class construction creation error. Execution is being Skipped.");
-            throw new RuntimeException("Action class construction creation error");
+            logger.warning("Action class Constructor creation error. Execution is being Skipped.");
+            throw new ElementActionException("Action class Constructor creation error");
         }
     }
 
@@ -114,11 +114,11 @@ public class ElementActionPerform {
     }
 
     private boolean isSelenium() {
-        return executionName.equals(Executions.SeleniumBrowser.toString());
+        return execution instanceof SeleniumBrowser;
     }
 
     private boolean isRestAssured() {
-        return executionName.equals(Executions.RestAssuredSetup.toString());
+        return execution instanceof RestAssuredSetup;
     }
 
     private void setHTTPMarkerOnDemand() {
@@ -141,7 +141,7 @@ public class ElementActionPerform {
     @Override
     public String toString() {
         return "ElementActionPerform{" +
-                "executionName='" + executionName + '\'' +
+                "execution='" + execution.getClass().getSimpleName() + '\'' +
                 ", element=" + element +
                 ", action='" + action + '\'' +
                 '}';

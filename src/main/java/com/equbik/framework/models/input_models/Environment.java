@@ -1,4 +1,4 @@
-package com.equbik.framework.models.json_model;
+package com.equbik.framework.models.input_models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

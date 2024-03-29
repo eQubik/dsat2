@@ -1,9 +1,10 @@
 package com.equbik.framework.adapters.sql;
 
 import com.equbik.framework.adapters.AdapterConfig;
+import com.equbik.framework.adapters.exceptions.AdapterException;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.services.Fields;
 import com.equbik.framework.services.StaticVariables;
+import com.equbik.framework.services.dictionaries.Fields;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 public class MapSQLiteElements implements AdapterConfig {
 
     /*
-     * MapSQLiteElements class is used for mapping SQLite model to Element class
+     * MapSQLiteElements class is used for mapping SQLite model to Elements list
      */
 
     private static final Logger logger = Logger.getLogger(MapSQLiteElements.class.getName());
@@ -38,8 +39,8 @@ public class MapSQLiteElements implements AdapterConfig {
              ResultSet resultSet = preparedStatement.executeQuery()) {
             return getElementsListFromDB(resultSet);
         } catch (SQLException e) {
-            logger.warning("Skipping execution due to: " + e.getMessage());
-            throw new RuntimeException("Skipping execution due to: " + e.getMessage());
+            logger.warning("SQLite Mapping skipped due to: " + e.getMessage());
+            throw new AdapterException("SQLite Mapping skipped due to: " + e.getMessage());
         }
     }
 

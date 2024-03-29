@@ -1,9 +1,10 @@
-package com.equbik.framework.models.artifact_model;
+package com.equbik.framework.models.output_models;
 
 import com.equbik.framework.services.StaticVariables;
-import com.equbik.framework.services.Status;
+import com.equbik.framework.services.dictionaries.Status;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -17,11 +18,12 @@ import java.util.Map;
  **/
 
 @Getter
+@Setter
 @Data
 public class ActionResult {
 
     /*
-     * Results class represents the result of the execution of each element during the execution
+     * ActionResult class represents the result of the execution of the element
      */
 
     private final Map<String, String> executionContent = new LinkedHashMap<>();
@@ -49,17 +51,6 @@ public class ActionResult {
         this.transaction = StaticVariables.uuidGeneration();
         this.endTime = LocalDateTime.now(ZoneOffset.UTC).toString();
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "Result {" +
-                "executionContent=" + executionContent +
-                ", status=" + status +
-                ", transaction='" + transaction + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                '}';
     }
 
 }

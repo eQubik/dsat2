@@ -1,8 +1,8 @@
 package com.equbik.framework.services;
 
-import com.equbik.framework.models.artifact_model.SuiteResult;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.models.json_model.Scenario;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.models.output_models.SuiteResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;

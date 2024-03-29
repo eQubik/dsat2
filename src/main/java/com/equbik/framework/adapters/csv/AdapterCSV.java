@@ -4,11 +4,10 @@ import com.equbik.framework.adapters.Adapter;
 import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterMethods;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.models.json_model.Scenario;
+import com.equbik.framework.models.input_models.Scenario;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Emil Vasilyev
@@ -19,10 +18,9 @@ import java.util.logging.Logger;
 public class AdapterCSV extends AdapterMethods implements Adapter {
 
     /*
-     * AdapterCSV class provides Adapter implementation and forms the Elements list for each step
+     * AdapterCSV class provides CSV Adapter implementation to form the Elements' collection for the whole scenario
      */
 
-    private static final Logger logger = Logger.getLogger(AdapterCSV.class.getName());
     private final Map<String, List<Element>> stepElements;
     private final Scenario scenario;
     private final CSVElementsPerStep elementsPerStep;

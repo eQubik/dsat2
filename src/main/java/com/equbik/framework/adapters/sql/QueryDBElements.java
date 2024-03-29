@@ -2,7 +2,7 @@
 //
 //import com.equbik.framework.models.json_model.Scenario;
 //import com.equbik.framework.models.json_model.Step;
-//import com.equbik.framework.services.Fields;
+//import com.equbik.framework.services.dictionaries.Fields;
 //
 //import java.util.LinkedList;
 //import java.util.List;

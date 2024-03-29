@@ -1,9 +1,10 @@
 package com.equbik.framework.adapters;
 
 import com.equbik.framework.adapters.csv.MapCSVElements;
+import com.equbik.framework.adapters.exceptions.AdapterConfigException;
 import com.equbik.framework.adapters.sql.MapSQLiteElements;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.services.Adapters;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.services.dictionaries.Adapters;
 
 import java.util.logging.Logger;
 
@@ -16,7 +17,8 @@ import java.util.logging.Logger;
 public class AdapterConfigProvider {
 
     /*
-     * AdapterMethods class ...
+     * AdapterConfigProvider class is used to get configuration information about the data structure
+     * that you use in your suite and provide all the Elements
      */
 
     private static final Logger logger = Logger.getLogger(AdapterConfigProvider.class.getName());
@@ -35,7 +37,7 @@ public class AdapterConfigProvider {
             return value;
         } else {
             logger.warning("Adapter field value can't be a null value. Execution is being Skipped.");
-            throw new RuntimeException("Adapter field value can't be a null value");
+            throw new AdapterConfigException("Adapter field value can't be a null value");
         }
     }
 
@@ -47,11 +49,12 @@ public class AdapterConfigProvider {
             logger.info("Set adapter to db");
             String adapterTable = environment.getAdapter().getTable();
             if(adapterTable == null) adapterTable = "auto_elements";
+            logger.info("adapter table name is :" + adapterTable);
             String path = "jdbc:sqlite:" + adapterPath;
             return new MapSQLiteElements(path, adapterTable);
         } else {
             logger.warning("Wrong adapter type. Execution is being Skipped.");
-            throw new RuntimeException("Wrong adapter type");
+            throw new AdapterConfigException("Wrong adapter type");
         }
     }
 

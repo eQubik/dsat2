@@ -1,5 +1,6 @@
 package com.equbik.framework.executions.drivers.chrome;
 
+import com.equbik.framework.executions.exceptions.ExecutionException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -31,7 +32,7 @@ public class ChromeRemote {
             remoteChromeThreadLocal.set(new RemoteWebDriver(new URL(hostName + hostPort), chromeOptions));
         } catch (MalformedURLException e) {
             logger.warning("Failed to connect to remote driver. Execution is being skipped.");
-            throw new RuntimeException("Failed to connect to remote driver");
+            throw new ExecutionException("Failed to connect to remote driver");
         }
     }
 

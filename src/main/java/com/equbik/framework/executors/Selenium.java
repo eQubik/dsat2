@@ -1,6 +1,7 @@
 package com.equbik.framework.executors;
 
-import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.executors.exceptions.ExecutorException;
+import com.equbik.framework.models.input_models.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 public class Selenium implements Executor {
 
     /*
-     * Selenium class is used to provide the chosen Execution with the proper settings
+     * Selenium class is used to provide the chosen Executor with the proper settings
      */
 
     private static final Logger logger = Logger.getLogger(Selenium.class.getName());
@@ -64,7 +65,7 @@ public class Selenium implements Executor {
             return resourceUrl;
         } else {
             logger.warning("Resource url can't be a null value. Execution is being skipped.");
-            throw new RuntimeException("Resource url can't be a null value");
+            throw new ExecutorException("Resource url can't be a null value");
         }
     }
 
@@ -74,11 +75,11 @@ public class Selenium implements Executor {
                 return Long.parseLong(waitSec);
             } catch (NumberFormatException e){
                 logger.warning("Wait should be a number value. Execution is being skipped.");
-                throw new RuntimeException("Wait should be a number value");
+                throw new ExecutorException("Wait should be a number value");
             }
         } else {
             logger.warning("Wait can't be a null value. Execution is being skipped.");
-            throw new RuntimeException("Wait can't be a null value");
+            throw new ExecutorException("Wait can't be a null value");
         }
     }
 
@@ -88,7 +89,7 @@ public class Selenium implements Executor {
                 return driverPath;
             } else {
                 logger.warning("Driver path can't be a null value when remote set false. Execution is being skipped.");
-                throw new RuntimeException("Driver path can't be a null value when remote set false");
+                throw new ExecutorException("Driver path can't be a null value when remote set false");
             }
         } else {
             return null;
@@ -101,7 +102,7 @@ public class Selenium implements Executor {
                 return chromiumPath;
             } else {
                 logger.warning("Chromium path can't be a null value when driver is chrome. Execution is being skipped.");
-                throw new RuntimeException("Chromium path can't be a null value when driver is chrome");
+                throw new ExecutorException("Chromium path can't be a null value when driver is chrome");
             }
         } else {
             return null;
@@ -114,7 +115,7 @@ public class Selenium implements Executor {
                 return hostName;
             } else {
                 logger.warning("Hub's hostname can't be a null value when remote set true. Execution is being skipped.");
-                throw new RuntimeException("Hub's hostname can't be a null value when remote set true");
+                throw new ExecutorException("Hub's hostname can't be a null value when remote set true");
             }
         } else {
             return null;
@@ -127,7 +128,7 @@ public class Selenium implements Executor {
                 return hostPort;
             } else {
                 logger.warning("Hub's port can't be a null value when remote set true. Execution is being skipped.");
-                throw new RuntimeException("Hub's port can't be a null value when remote set true");
+                throw new ExecutorException("Hub's port can't be a null value when remote set true");
             }
         } else {
             return null;

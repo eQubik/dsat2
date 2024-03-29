@@ -1,11 +1,12 @@
 package com.equbik.framework.perform;
 
 import com.equbik.framework.executions.Execution;
-import com.equbik.framework.models.artifact_model.ActionResult;
-import com.equbik.framework.models.artifact_model.StepResult;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.services.Status;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.output_models.ActionResult;
+import com.equbik.framework.models.output_models.StepResult;
+import com.equbik.framework.services.StaticVariables;
+import com.equbik.framework.services.dictionaries.Status;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -69,6 +70,8 @@ public class StepActionPerform {
             } else if (typeId == 21) {
                 setHTTPMarker(element);
                 setCode(element);
+            } else if (typeId == 24) {
+                setGlobalToken(element);
             }
         }
     }
@@ -100,6 +103,15 @@ public class StepActionPerform {
             element.setMarker(element.getMarker() + "/" + element.getValue());
         } else {
             logger.info(element.getId() + " priority set to related element");
+        }
+    }
+
+    private void setGlobalToken(Element element){
+        if (element.getRelatedElement() != null){
+            element.setValue(StaticVariables.sharedData.get(element.getRelatedElement()));
+        } else {
+            element.setValue("");
+            logger.warning("Related Element is null, can't provide your token");
         }
     }
 

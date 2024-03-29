@@ -1,9 +1,10 @@
 package com.equbik.framework.adapters.csv;
 
 import com.equbik.framework.adapters.AdapterConfig;
+import com.equbik.framework.adapters.exceptions.AdapterException;
 import com.equbik.framework.models.element_model.Element;
-import com.equbik.framework.services.Fields;
 import com.equbik.framework.services.StaticVariables;
+import com.equbik.framework.services.dictionaries.Fields;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
 public class MapCSVElements implements AdapterConfig {
 
     /*
-     * MapCSVToElement class is used for mapping csv model to Element class
+     * MapCSVToElement class is used for mapping csv model to Elements list
      */
 
     private static final Logger logger = Logger.getLogger(MapCSVElements.class.getName());
@@ -68,8 +69,8 @@ public class MapCSVElements implements AdapterConfig {
             }
             return elementsList;
         } catch (IOException e) {
-            logger.warning("Skipping execution due to: " + e.getMessage());
-            throw new RuntimeException("Skipping execution due to: " + e.getMessage());
+            logger.warning("CSV Mapping skipped due to: " + e.getMessage());
+            throw new AdapterException("CSV Mapping skipped due to: " + e.getMessage());
         }
     }
 

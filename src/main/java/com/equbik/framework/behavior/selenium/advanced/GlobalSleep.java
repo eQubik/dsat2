@@ -1,6 +1,6 @@
 package com.equbik.framework.behavior.selenium.advanced;
 
-import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.models.input_models.Environment;
 
 import java.util.logging.Logger;
 
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class GlobalSleep {
 
     /*
-     * GlobalSleep class ...
+     * GlobalSleep class used to invoke Thread.sleep method before each action
      */
 
     private static final Logger logger = Logger.getLogger(GlobalSleep.class.getName());

@@ -1,6 +1,7 @@
 package com.equbik.framework.executors;
 
-import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.executors.exceptions.ExecutorException;
+import com.equbik.framework.models.input_models.Environment;
 
 import java.util.logging.Logger;
 
@@ -12,8 +13,9 @@ import java.util.logging.Logger;
 
 public class RestAssured implements Executor {
 
-    //TODO
-    // Finish
+    /*
+     * RestAssured class is used to provide the chosen Executor with the proper settings
+     */
 
     private static final Logger logger = Logger.getLogger(RestAssured.class.getName());
     private final String baseUrl;
@@ -35,7 +37,7 @@ public class RestAssured implements Executor {
             return baseUrl;
         } else {
             logger.warning("Base url can't be a null value. Execution is being skipped.");
-            throw new RuntimeException("Base url can't be a null value");
+            throw new ExecutorException("Base url can't be a null value");
         }
     }
 

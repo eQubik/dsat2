@@ -1,6 +1,7 @@
 package com.equbik.framework.executors;
 
-import com.equbik.framework.models.json_model.Environment;
+import com.equbik.framework.executors.exceptions.ExecutorException;
+import com.equbik.framework.models.input_models.Environment;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 public class ExecutorProvider {
 
     /*
-     * ExecutorProvider class is ...
+     * ExecutorProvider class is used to provide the correct Executor with Environment settings
      */
 
     private static final Logger logger = Logger.getLogger(ExecutorProvider.class.getName());
@@ -32,7 +33,7 @@ public class ExecutorProvider {
             return Class.forName("com.equbik.framework.executors." + executor);
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             logger.warning("Executor class not found. Execution is being skipped.");
-            throw new RuntimeException("Executor class not found");
+            throw new ExecutorException("Executor class not found");
         }
     }
 
@@ -42,11 +43,11 @@ public class ExecutorProvider {
                 return executorClass.getDeclaredConstructor(Environment.Executor.class);
             } catch (NoSuchMethodException e) {
                 logger.warning("Error creating executor's constructor. Execution is being skipped.");
-                throw new RuntimeException("Error creating executor's constructor");
+                throw new ExecutorException("Error creating executor's constructor");
             }
         } else {
             logger.warning("Wrong executor type. Execution is being skipped.");
-            throw new RuntimeException("Wrong executor type");
+            throw new ExecutorException("Wrong executor type");
         }
     }
 
@@ -55,7 +56,7 @@ public class ExecutorProvider {
             return (Executor) executorConstructor.newInstance(executorConfig);
         } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
             logger.warning("Error during executor Object creation. Execution is being skipped.");
-            throw new RuntimeException("Error during executor Object creation: " + e.getMessage());
+            throw new ExecutorException("Error during executor Object creation");
         }
     }
 

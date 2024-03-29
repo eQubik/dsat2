@@ -4,13 +4,16 @@ import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterConfigProvider;
 import com.equbik.framework.executors.Executor;
 import com.equbik.framework.executors.ExecutorProvider;
-import com.equbik.framework.models.json_model.Environment;
-import com.equbik.framework.models.json_model.Scenario;
-import com.equbik.framework.services.Executions;
+import com.equbik.framework.models.input_models.Environment;
+import com.equbik.framework.models.input_models.Scenario;
 import com.equbik.framework.services.JSONParser;
 import com.equbik.framework.services.StaticVariables;
+import com.equbik.framework.services.dictionaries.Executions;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class SuiteActionPerform {
 
@@ -43,10 +46,17 @@ public class SuiteActionPerform {
         return adapterConfig;
     }
 
-    private LinkedList<Scenario> scenarios(String... scenarioPath){
+    private LinkedList<Scenario> scenarios(String... scenariosPath){
         LinkedList<Scenario> scenarios = new LinkedList<>();
-        for(String scenario : scenarioPath){
-            scenarios.add(JSONParser.parseScenario(scenario));
+        for(String scenarioPath : scenariosPath){
+            Scenario scenario = JSONParser.parseScenario(scenarioPath);
+            try{
+                if(scenario.getExecutor().getName() != null) {
+                    scenarios.add(scenario);
+                }
+            } catch (Exception e){
+                throw new RuntimeException("Executor is not provided or not valid");
+            }
         }
         return scenarios;
     }
@@ -62,15 +72,9 @@ public class SuiteActionPerform {
         Environment.Executor seleniumRemote = seleniumRemote(executors);
         Environment.Executor seleniumLocal = seleniumLocal(executors);
         Environment.Executor restassured = restassured(executors);
-        if(seleniumRemote != null){
-            executorConfigs.put(Executions.selenium + "|remote", seleniumRemote);
-        }
-        if(seleniumLocal != null) {
-            executorConfigs.put(Executions.selenium + "|local", seleniumLocal);
-        }
-        if(restassured != null){
-            executorConfigs.put(Executions.restassured.toString(), restassured);
-        }
+        if(seleniumRemote != null) executorConfigs.put(Executions.selenium + "|remote", seleniumRemote);
+        if(seleniumLocal != null) executorConfigs.put(Executions.selenium + "|local", seleniumLocal);
+        if(restassured != null) executorConfigs.put(Executions.restassured.toString(), restassured);
         return executorConfigs;
     }
 

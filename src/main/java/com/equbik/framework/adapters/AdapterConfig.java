@@ -13,8 +13,8 @@ import java.util.List;
 public interface AdapterConfig {
 
     /*
-     * Adapter interface should be implemented by those classes that are being used as an Adapter
-     * of your Data Structure used to store the elements
+     * AdapterConfig interface should be implemented by those classes that will provide the list of all accessible
+     * elements in your Data Structure
      */
 
     List<Element> elementsList();

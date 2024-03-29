@@ -1,6 +1,7 @@
 package com.equbik.framework.services;
 
 import com.equbik.framework.models.element_model.Element;
+import com.equbik.framework.services.dictionaries.Executions;
 import io.restassured.response.ValidatableResponse;
 import org.openqa.selenium.WebDriver;
 
@@ -20,26 +21,13 @@ public class StaticVariables {
      * Use StaticVariables class when you need to share information across different parts of the execution process
      */
 
-    //Information from Driver's methods can be added here and then will be added to the Results class
-    public static Map<String, String> driverContent(WebDriver driver) {
-        Map<String, String> content = new LinkedHashMap<>();
-        content.put("title", driver.getTitle());
-        content.put("current url", driver.getCurrentUrl());
-        return content;
-    }
-
-    //Information from Response can be added here and then will be added to the Results class
-    public static Map<String, String> connectionContent(ValidatableResponse validatableResponse) {
-        Map<String, String> content = new LinkedHashMap<>();
-        content.put("content_type", validatableResponse.extract().contentType());
-        //content.put("headers", validatableResponse.extract().headers().toString());
-        content.put("cookies", validatableResponse.extract().cookies().toString());
-        return content;
-    }
-
     //Generates the UUID where needed
     public static String uuidGeneration(){
         return UUID.nameUUIDFromBytes(LocalDateTime.now(ZoneOffset.UTC).toString().getBytes()).toString();
+    }
+
+    public static String uuidGeneration(String data){
+        return UUID.nameUUIDFromBytes(data.getBytes()).toString();
     }
 
     //This map was added for backward compatibility because I already use previous version of this framework.
@@ -62,23 +50,24 @@ public class StaticVariables {
         actionsMap.put(14, "SetCurrentWindow");
         actionsMap.put(15, "ChangeBrowserTab");
         actionsMap.put(16, "ClickJS");
-        actionsMap.put(17, "JSExecutor");
         //Experimental things...
         actionsMap.put(6, "EnterByPIN");
+        actionsMap.put(23, "GetLocalStorage");
+        actionsMap.put(17, "JSExecutor");
         //RestAssured
         actionsMap.put(18, "GETRequest");
         actionsMap.put(19, "POSTRequest");
         actionsMap.put(20, "GETRequest");
         actionsMap.put(21, "PUTRequest");
         actionsMap.put(22, "DELETERequest");
+        actionsMap.put(24, "SetGlobalHeader");
         //Other executor's methods
 
         return actionsMap.get(action);
     }
 
     //When you start the app, you need to mention the appropriate executor's name
-    //which is typically starts with uppercase because it's a Java class name, however you can add another forms of the
-    //executor's names for easy of use or if you have an OCD
+    //which is typically starts with the uppercase because it's a Java class name
     public static String executors(String executor){
         if(executor.equalsIgnoreCase(Executions.selenium.toString())){
             return Executions.Selenium.toString();
@@ -89,18 +78,36 @@ public class StaticVariables {
         }
     }
 
-    //Used to change browser tabs during the test execution
+    //TODO
+    // Will be removed or optimized during further development:
+
+    //I use this Set to switch the browser tabs
     public static Set<String> tabs = new LinkedHashSet<>();
 
-    //TODO
-    // Shared field
+    //I use this Map to share the IDs of the inserted entities
     public static Map<String, Integer> ids = new HashMap<>();
 
-    //TODO
-    // temp var
+    //I use this Map to save the state of the configured elements(RestAssured - relatedElements)
     public static Map<Element, Boolean> isConfigured = new HashMap<>();
 
-    //
+    //I use this Map to share the data across various scenarios inside single suite
     public static Map<String, String> sharedData = new HashMap<>();
+
+    //I use this Map to add the Selenium WebDriver information to the ActionResult class
+    public static Map<String, String> driverContent(WebDriver driver) {
+        Map<String, String> content = new LinkedHashMap<>();
+        content.put("title", driver.getTitle());
+        content.put("current url", driver.getCurrentUrl());
+        return content;
+    }
+
+    //I use this Map to add the RestAssured Response information to the ActionResult class
+    public static Map<String, String> connectionContent(ValidatableResponse validatableResponse) {
+        Map<String, String> content = new LinkedHashMap<>();
+        content.put("content_type", validatableResponse.extract().contentType());
+        content.put("headers", validatableResponse.extract().headers().toString());
+        content.put("cookies", validatableResponse.extract().cookies().toString());
+        return content;
+    }
 
 }
