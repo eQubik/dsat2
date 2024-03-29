@@ -82,9 +82,9 @@ public class DSAT {
         //TODO
         // Exceptions and remove hardcode
         if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && scenario.getExecutor().isRemote()) {
-            return executors.get(Executions.selenium + "|remote");
+            return executors.get(Executions.selenium + "." + Executions.remote);
         } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.selenium.toString()) && !scenario.getExecutor().isRemote()){
-            return executors.get(Executions.selenium + "|local");
+            return executors.get(Executions.selenium + "." + Executions.local);
         } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.restassured.toString())){
             return executors.get(Executions.restassured.toString());
         } else {

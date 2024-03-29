@@ -4,8 +4,10 @@ import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterConfigProvider;
 import com.equbik.framework.executors.Executor;
 import com.equbik.framework.executors.ExecutorProvider;
+import com.equbik.framework.executors.exceptions.ExecutorException;
 import com.equbik.framework.models.input_models.Environment;
 import com.equbik.framework.models.input_models.Scenario;
+import com.equbik.framework.perform.exceptions.ScenarioActionException;
 import com.equbik.framework.services.JSONParser;
 import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.dictionaries.Executions;
@@ -22,7 +24,7 @@ public class SuiteActionPerform {
     private final HashMap<String, Executor> executors;
     private final AdapterConfig adapterConfig;
 
-    public SuiteActionPerform(String environmentPath, String... scenarios){
+    public SuiteActionPerform(String environmentPath, String... scenarios) {
         this.scenarios = scenarios(scenarios);
         this.environment = JSONParser.parseEnvironment(environmentPath);
         this.executors = executors(environment);
@@ -46,28 +48,28 @@ public class SuiteActionPerform {
         return adapterConfig;
     }
 
-    private LinkedList<Scenario> scenarios(String... scenariosPath){
+    private LinkedList<Scenario> scenarios(String... scenariosPath) {
         LinkedList<Scenario> scenarios = new LinkedList<>();
-        for(String scenarioPath : scenariosPath){
+        for (String scenarioPath : scenariosPath) {
             Scenario scenario = JSONParser.parseScenario(scenarioPath);
-            try{
-                if(scenario.getExecutor().getName() != null) {
-                    scenarios.add(scenario);
-                }
-            } catch (Exception e){
-                throw new RuntimeException("Executor is not provided or not valid");
+            if (scenario.getName() != null &&
+                    scenario.getExecutor().getName() != null &&
+                    scenario.getSteps().isEmpty()) {
+                scenarios.add(scenario);
+            } else {
+                throw new ScenarioActionException("Scenario fields are not provided or not valid");
             }
         }
         return scenarios;
     }
 
-    private HashMap<String, Executor> executors(Environment environment){
+    private HashMap<String, Executor> executors(Environment environment) {
         HashMap<String, Environment.Executor> executorConfigs = new HashMap<>();
         return setExecutors(setExecutorsConfig(environment, executorConfigs));
     }
 
     private HashMap<String, Environment.Executor> setExecutorsConfig(Environment environment,
-                                                                     HashMap<String, Environment.Executor> executorConfigs){
+                                                                     HashMap<String, Environment.Executor> executorConfigs) {
         List<Environment.Executor> executors = environment.getExecutor().values().stream().toList();
         executorConfigs.putAll(seleniumRemote(executors, executorConfigs));
         executorConfigs.putAll(seleniumLocal(executors, executorConfigs));
@@ -76,7 +78,7 @@ public class SuiteActionPerform {
     }
 
     private HashMap<String, Environment.Executor> seleniumRemote(List<Environment.Executor> executors,
-                                                HashMap<String, Environment.Executor> executorConfigs){
+                                                                 HashMap<String, Environment.Executor> executorConfigs) {
         executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.selenium.toString()) &&
                         executor.isRemote())
@@ -85,7 +87,7 @@ public class SuiteActionPerform {
     }
 
     private HashMap<String, Environment.Executor> seleniumLocal(List<Environment.Executor> executors,
-                                                                 HashMap<String, Environment.Executor> executorConfigs){
+                                                                HashMap<String, Environment.Executor> executorConfigs) {
         executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.selenium.toString()) &&
                         !executor.isRemote())
@@ -94,15 +96,16 @@ public class SuiteActionPerform {
     }
 
     private HashMap<String, Environment.Executor> restassured(List<Environment.Executor> executors,
-                                                                HashMap<String, Environment.Executor> executorConfigs){
+                                                              HashMap<String, Environment.Executor> executorConfigs) {
         executors.stream()
                 .filter(executor -> executor.getType().equalsIgnoreCase(Executions.restassured.toString()))
                 .findFirst().ifPresent(executor -> executorConfigs.put(Executions.restassured.toString(), executor));
         return executorConfigs;
     }
-    private HashMap<String, Executor> setExecutors(HashMap<String, Environment.Executor> executorConfigs){
+
+    private HashMap<String, Executor> setExecutors(HashMap<String, Environment.Executor> executorConfigs) {
         HashMap<String, Executor> executors = new HashMap<>();
-        for(Map.Entry<String, Environment.Executor> executor : executorConfigs.entrySet()){
+        for (Map.Entry<String, Environment.Executor> executor : executorConfigs.entrySet()) {
             String executorIgnoreCase = StaticVariables.executors(executor.getValue().getType());
             ExecutorProvider executorProvider = new ExecutorProvider(executorIgnoreCase, executor.getValue());
             executors.put(executor.getKey(), executorProvider.getExecutor());
