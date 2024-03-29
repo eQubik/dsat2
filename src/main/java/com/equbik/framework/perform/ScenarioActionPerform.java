@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class ScenarioActionPerform {
 
     /*
-     * ScenarioActionPerform class creates a Steps map, initializes Execution and Adapter, doing post jobs
+     * ScenarioActionPerform class prepares steps for execution and doing post jobs
      */
 
     private static final Logger logger = Logger.getLogger(ScenarioActionPerform.class.getName());
@@ -56,20 +56,13 @@ public class ScenarioActionPerform {
     }
 
     public void startScenario() {
-        List<StepActionPerform> stepsList = new LinkedList<>();
-        createStepsMap(scenario, stepsList);
         scenarioResult.setScenarioName(scenario.getName());
-        scenarioResult.setStepResultsList(executeSteps(stepsList));
+        List<StepActionPerform> stepsList = new LinkedList<>();
+        LinkedList<StepResult> stepsResults = new LinkedList<>();
+        createStepsMap(scenario, stepsList);
+        executeSteps(stepsList, stepsResults);
+        scenarioResult.setStepResultsList(stepsResults);
         postJobs();
-    }
-
-    private Status previousStepResult() {
-        try {
-            StepResult previousStepResult = scenarioResult.getStepResultsList().stream().skip(scenarioResult.getStepResultsList().size() - 1).findFirst().orElse(null);
-            return previousStepResult.getActionResultsList().getLast().getStatus();
-        } catch (Exception e) {
-            return Status.Null;
-        }
     }
 
     private void createStepsMap(Scenario scenario, List<StepActionPerform> stepsList) {
@@ -84,18 +77,23 @@ public class ScenarioActionPerform {
         }
     }
 
-    private LinkedList<StepResult> executeSteps(List<StepActionPerform> stepsList) {
-        LinkedList<StepResult> results = new LinkedList<>();
-        for (StepActionPerform stepAction : stepsList) {
-            stepAction.process(previousStepResult());
-            results.add(stepAction.getStepResult());
+    private Status previousStepResult(LinkedList<StepResult> stepResults) {
+        try {
+            return stepResults.getLast().getActionResultsList().getLast().getStatus();
+        } catch (Exception e) {
+            return Status.Null;
         }
-        return results;
+    }
+
+    private void executeSteps(List<StepActionPerform> stepsList, LinkedList<StepResult> stepsResults) {
+        for (StepActionPerform stepAction : stepsList) {
+            stepAction.process(previousStepResult(stepsResults));
+            stepsResults.add(stepAction.getStepResult());
+        }
     }
 
     private void postJobs(){
-        if(execution.getClass().getSimpleName().equals(Executions.SeleniumBrowser.toString())){
-            SeleniumBrowser browser = (SeleniumBrowser) execution;
+        if(execution instanceof SeleniumBrowser browser){
             if (browser.isQuit()) {
                 logger.info("Selenium browser is being closed");
                 browser.getDriver().quit();

@@ -5,6 +5,7 @@ import com.equbik.framework.models.element_model.Element;
 import com.equbik.framework.models.input_models.Environment;
 import com.equbik.framework.models.output_models.ActionResult;
 import com.equbik.framework.models.output_models.StepResult;
+import com.equbik.framework.perform.exceptions.StepActionException;
 import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.dictionaries.Status;
 
@@ -124,7 +125,7 @@ public class StepActionPerform {
                 results.add(elementAction.getAction());
             } catch (IndexOutOfBoundsException e) {
                 logger.warning("There is no available elements provided. Execution is being Skipped.");
-                throw new RuntimeException("There is no available elements provided");
+                throw new StepActionException("There is no available elements provided");
             }
         }
         for (int i = 1; i < elements.size(); i++) {
