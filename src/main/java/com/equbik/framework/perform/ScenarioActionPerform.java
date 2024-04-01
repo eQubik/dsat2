@@ -10,7 +10,6 @@ import com.equbik.framework.models.input_models.Scenario;
 import com.equbik.framework.models.input_models.Step;
 import com.equbik.framework.models.output_models.ScenarioResult;
 import com.equbik.framework.models.output_models.StepResult;
-import com.equbik.framework.services.dictionaries.Executions;
 import com.equbik.framework.services.dictionaries.Status;
 
 import java.util.HashMap;

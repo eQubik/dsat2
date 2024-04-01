@@ -11,10 +11,9 @@ import com.equbik.framework.models.output_models.SuiteResult;
 import com.equbik.framework.perform.ScenarioActionPerform;
 import com.equbik.framework.perform.SuiteActionPerform;
 import com.equbik.framework.services.JSONParser;
+import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.dictionaries.Executions;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -57,7 +56,7 @@ public class DSAT {
     }
 
     public void performSuite() {
-        this.suiteResult.setSuiteName(LocalDateTime.now(ZoneOffset.UTC).toString());
+        this.suiteResult.setSuiteName(StaticVariables.uuidGeneration());
         LinkedList<ScenarioResult> scenarioResultsList = new LinkedList<>();
         for(Map.Entry<Scenario, Adapter> scenario : scenariosElements.entrySet()){
             ScenarioActionPerform scenarioActions = new ScenarioActionPerform(

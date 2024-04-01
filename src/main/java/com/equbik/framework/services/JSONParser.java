@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +22,9 @@ public class JSONParser {
     /*
      * JSONParser class. Hope there is no need to describe what it's used for
      */
+
+    //TODO
+    // To be refactored
 
     private static final Logger logger = Logger.getLogger(JSONParser.class.getName());
 
@@ -57,8 +59,11 @@ public class JSONParser {
     public static void convertSuite(SuiteResult suiteResult) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Random random = new Random();
-            File file = new File("src/main/resources/" + random.nextInt() + ".json");
+            File directory = new File("results");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File file = new File(directory + "/" + suiteResult.getSuiteName() + ".json");
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, suiteResult);
         } catch (IOException e) {
             logger.warning("Skipping execution due to: " + e.getMessage());

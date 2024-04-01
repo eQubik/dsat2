@@ -1,10 +1,5 @@
 package com.equbik;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
 /**
  * Emil Vasilyev
  * emilvasily@gmail.com
@@ -22,15 +17,13 @@ public class Launcher {
 
         //PROD
 
-        // The first argument is environmentPath
         String envPath = args[0];
-
-        // The rest of the arguments are scenarios
         String[] scenarios = new String[args.length - 1];
         System.arraycopy(args, 1, scenarios, 0, args.length - 1);
 
         DSAT app = new DSAT(envPath, scenarios);
         app.performSuite();
+        app.getSuiteResult();
 
         //DEV
 
@@ -40,7 +33,7 @@ public class Launcher {
 //        };
 //        DSAT app = new DSAT(envPath, scenarios);
 //        app.performSuite();
-//        //System.out.println(app.getSuiteResult());
+//        app.getSuiteResult();
 
     }
 

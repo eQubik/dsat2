@@ -21,4 +21,4 @@ chrome-win64/
 *.zip
 /src/main/resources/scenarios/*.json
 /src/main/resources/scenarios/*.csv
-/src/main/resources/*.json
+/results
