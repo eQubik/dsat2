@@ -19,3 +19,6 @@ chrome-win64/
 *.png
 *.exe
 *.zip
+/src/main/resources/scenarios/*.json
+/src/main/resources/scenarios/*.csv
+/src/main/resources/*.json

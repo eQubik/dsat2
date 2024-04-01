@@ -4,7 +4,6 @@ import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterConfigProvider;
 import com.equbik.framework.executors.Executor;
 import com.equbik.framework.executors.ExecutorProvider;
-import com.equbik.framework.executors.exceptions.ExecutorException;
 import com.equbik.framework.models.input_models.Environment;
 import com.equbik.framework.models.input_models.Scenario;
 import com.equbik.framework.perform.exceptions.ScenarioActionException;
@@ -54,7 +53,7 @@ public class SuiteActionPerform {
             Scenario scenario = JSONParser.parseScenario(scenarioPath);
             if (scenario.getName() != null &&
                     scenario.getExecutor().getName() != null &&
-                    scenario.getSteps().isEmpty()) {
+                    !scenario.getSteps().isEmpty()) {
                 scenarios.add(scenario);
             } else {
                 throw new ScenarioActionException("Scenario fields are not provided or not valid");
