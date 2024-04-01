@@ -33,7 +33,7 @@ public class DSAT {
      */
 
     //TODO
-    // Remote execution, name each scenario inside a single execution(to share the state)
+    // Remote execution, name each scenario inside a single suite(to control the flow)
 
     private static final Logger logger = Logger.getLogger(DSAT.class.getName());
     private final Environment environment;
