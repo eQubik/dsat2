@@ -16,7 +16,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Emil Vasilyev
+ * emilvasily@gmail.com
+ * https://www.linkedin.com/in/emilvas/
+ **/
+
 public class SuiteActionPerform {
+
+    /*
+     * SuiteActionPerform class is used to parse the environment config and scenarios and provide the according objects
+     */
 
     private final Environment environment;
     private final LinkedList<Scenario> scenarios;

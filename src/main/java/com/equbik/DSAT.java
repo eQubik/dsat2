@@ -4,6 +4,7 @@ import com.equbik.framework.adapters.Adapter;
 import com.equbik.framework.adapters.AdapterConfig;
 import com.equbik.framework.adapters.AdapterProvider;
 import com.equbik.framework.executors.Executor;
+import com.equbik.framework.executors.exceptions.ExecutorException;
 import com.equbik.framework.models.input_models.Environment;
 import com.equbik.framework.models.input_models.Scenario;
 import com.equbik.framework.models.output_models.ScenarioResult;
@@ -87,7 +88,7 @@ public class DSAT {
         } else if (scenario.getExecutor().getName().equalsIgnoreCase(Executions.restassured.toString())){
             return executors.get(Executions.restassured.toString());
         } else {
-            throw new RuntimeException("There is no supported executor");
+            throw new ExecutorException("There is no supported executor");
         }
     }
 
