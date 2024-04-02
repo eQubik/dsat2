@@ -1,0 +1,24 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Eclipse
+.classpath
+.project
+.settings/
+# Intellij
+.idea/
+*.iml
+*.iws
+# Mac
+.DS_Store
+# Maven
+log/
+out/
+target/
+chrome-win64/
+*.png
+*.exe
+*.zip
+/src/main/resources/scenarios/*.json
+/src/main/resources/scenarios/*.csv
+/results
