@@ -33,5 +33,5 @@ It's used to invoke the necessary Action's `takeAction()` method depending on th
 5. If you call DSAT's `getSuiteResult()` method, execution will generate "results" folder where you will find the JSON file represents the result of the Suite execution.
 
 Due to the high workload, writing a comprehensive documentation takes me a long time. I'm also working on a series of video tutorials to make it easier for you to start working with the DSAT.
-So, please stay connected and forget to follow me:
+So, please stay connected and don't forget to follow me:
 https://www.linkedin.com/in/emilvas/
