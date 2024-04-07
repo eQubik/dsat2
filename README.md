@@ -11,6 +11,8 @@ Before getting started, I want to mention that at this moment, if you decide to 
 2. Open the project in your favorite IDE and configure the dependencies to download.
 3. Inside the com.equbik package, you can find two classes: Launcher and DSAT. The first one was created as an entry point, allowing you to initiate the tests from the command line. You can configure it to start in other ways (in another fork, I use API calls to start the suite), so navigate to the DSAT class. 
 
+![Alt text](src/main/resources/Scheme.png?raw=true "Scheme")
+
 **DSAT** is the main class of the framework. It creates an instance of the SuiteActionPerform class, which provides us with the parsed Scenarios, Adapter implementation, Executors map, and Environment config. It also creates a Suite results class and generates JSON output.
 
 **SuiteActionPerform**\
@@ -28,7 +30,7 @@ It configures each element (if needed) depending on its actionType and provided 
 It's used to invoke the necessary Action's `takeAction()` method depending on the Execution implementation.
 
 4. You can start the Suite by providing an environment JSON config and Scenarios you want to test. Examples will be provided separately, and I will share the link here.
-5. If you call DSAT's `getSuiteResult()` method, execution will generate "results" folder were you will find the JSON file represents the result of the Suite execution.
+5. If you call DSAT's `getSuiteResult()` method, execution will generate "results" folder where you will find the JSON file represents the result of the Suite execution.
 
 Due to the high workload, writing a comprehensive documentation takes me a long time. I'm also working on a series of video tutorials to make it easier for you to start working with the DSAT.
 So, please stay connected and forget to follow me:
