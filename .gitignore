@@ -16,7 +16,6 @@ log/
 out/
 target/
 chrome-win64/
-*.png
 *.exe
 *.zip
 /src/main/resources/scenarios/*.json

@@ -56,7 +56,7 @@ public class ScenarioActionPerform {
 
     public void startScenario() {
         scenarioResult.setScenarioName(scenario.getName());
-        List<StepActionPerform> stepsList = new LinkedList<>();
+        LinkedList<StepActionPerform> stepsList = new LinkedList<>();
         LinkedList<StepResult> stepsResults = new LinkedList<>();
         createStepsMap(scenario, stepsList);
         executeSteps(stepsList, stepsResults);
