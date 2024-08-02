@@ -62,7 +62,7 @@ public class StepActionPerform {
     private void preConfigElements(List<Element> elements) {
         for (Element element : elements) {
             int typeId = element.getActionType().getActionType();
-            if ((typeId == 2 || typeId == 8 || typeId == 13) && variables.containsKey(element.getValue())) {
+            if ((typeId == 2 || typeId == 8 || typeId == 13 || typeId == 25) && variables.containsKey(element.getValue())) {
                 setValue(element);
             } else if ((typeId == 7 || typeId == 12) && variables.containsKey(element.getValue())) {
                 setMarker(element);

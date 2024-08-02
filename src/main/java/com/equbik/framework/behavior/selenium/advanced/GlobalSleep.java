@@ -17,7 +17,7 @@ public class GlobalSleep {
      */
 
     private static final Logger logger = Logger.getLogger(GlobalSleep.class.getName());
-    private Long sec;
+    private final Long sec;
 
     public GlobalSleep(Environment.Sleep sleep){
         this.sec = sleep.getSec();
@@ -25,12 +25,13 @@ public class GlobalSleep {
     }
 
     public GlobalSleep(){
+        this.sec = 0L;
         logger.info("Global sleep won't be used during execution");
     }
 
     public void threadSleep(){
         try {
-            Thread.sleep(1000 * sec);
+            if (sec != 0L) Thread.sleep(1000 * sec);
         } catch (Exception e) {
             //Just ignore the problem
         }

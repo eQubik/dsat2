@@ -9,14 +9,11 @@ import com.equbik.framework.models.output_models.ActionResult;
 import com.equbik.framework.services.StaticVariables;
 import com.equbik.framework.services.StatusMessage;
 import com.equbik.framework.services.dictionaries.Status;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +23,7 @@ import java.util.Map;
  * https://www.linkedin.com/in/emilvas/
  **/
 
-public class UploadFile implements TakeAction{
+public class RobotKeys implements TakeAction {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -34,7 +31,7 @@ public class UploadFile implements TakeAction{
     private final AWebElement aWebElement;
     private final Map<String, String> additionalMessage = new HashMap<>();
 
-    public UploadFile(Execution execution, Element element, AWebElement advancedElement) {
+    public RobotKeys(Execution execution, Element element, AWebElement advancedElement) {
         SeleniumBrowser browser = (SeleniumBrowser) execution;
         this.driver = browser.getDriver();
         this.wait = browser.getWait();
@@ -47,17 +44,14 @@ public class UploadFile implements TakeAction{
         ActionResult result = new ActionResult();
         StatusMessage statusMessage;
         try {
-            File doc = new File(element.getValue());
-
-            WebElement uploaded = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(element.getMarker())));
-            WebElement modifiedUploadedWebElement = aWebElement.getElement(driver, uploaded);
-            modifiedUploadedWebElement.sendKeys(doc.getAbsolutePath());
-
-//            WebElement toUpload = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(element.getRelatedElement())));
-//            WebElement modifiedToUploadWebElement = aWebElement.getElement(driver, toUpload);
-            Actions action = new Actions(driver);
-            action.dragAndDrop(uploaded, uploaded);
-
+            Robot robot = new Robot();
+            for (char c : element.getValue().toCharArray()) {
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+                if (keyCode != 0) {
+                    robot.keyPress(keyCode);
+                    robot.keyRelease(keyCode);
+                }
+            }
             statusMessage = new StatusMessage(Status.Success, element, this.getClass().getSimpleName());
             return result.additional(Status.Success, statusMessage.getStatusMessage().trim(), content());
         } catch (Exception e) {

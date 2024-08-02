@@ -29,7 +29,7 @@ public class Launcher {
 
 //        String envPath = "src/main/resources/scenarios/env.json";
 //        String[] scenarios = {
-//                "src/main/resources/scenarios/sc_wiki.json"
+//                "src/main/resources/scenarios/robot.json"
 //        };
 //        DSAT app = new DSAT(envPath, scenarios);
 //        app.performSuite();

@@ -50,17 +50,20 @@ public class StaticVariables {
         actionsMap.put(14, "SetCurrentWindow");
         actionsMap.put(15, "ChangeBrowserTab");
         actionsMap.put(16, "ClickJS");
-        //Experimental things...
+        //Selenium Experimental things...
         actionsMap.put(6, "EnterByPIN");
         actionsMap.put(23, "GetLocalStorage");
         actionsMap.put(17, "JSExecutor");
+        actionsMap.put(25, "RobotKeys");
+        actionsMap.put(26, "RobotEnter");
+        actionsMap.put(27, "ClickStaleElement");
         //RestAssured
-        actionsMap.put(18, "GETRequest");
-        actionsMap.put(19, "POSTRequest");
-        actionsMap.put(20, "GETRequest");
-        actionsMap.put(21, "PUTRequest");
-        actionsMap.put(22, "DELETERequest");
-        actionsMap.put(24, "SetGlobalHeader");
+        actionsMap.put(118, "GETRequest");
+        actionsMap.put(119, "POSTRequest");
+        actionsMap.put(120, "GETRequest");
+        actionsMap.put(121, "PUTRequest");
+        actionsMap.put(122, "DELETERequest");
+        actionsMap.put(124, "SetGlobalHeader");
         //Other executor's methods
 
         return actionsMap.get(action);
